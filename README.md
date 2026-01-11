@@ -86,4 +86,8 @@ Feel free to fork this project and add more scenarios! If you find a bug or thin
 
 ## 📝 License
 
-This project is open-source and free to use for educational purposes. Happy Testing!
+This project is free to use for educational purposes.
+
+I'm currently very active in exploring AI utilization for testing apps and software development purpose. If you want to buy me a coffee or support me with software licenses (e.g. Google AI Pro/Ultra, Github Copilot, Claude, etc), reach out to me here: <a href="https://sociabuzz.com/farizagati">Fariz Agati</a>
+
+Happy Testing!

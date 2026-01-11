@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Drag and Drop</h1>
+                <p class="page-description">Drag boxes between columns to practice drag-and-drop automation.</p>
+
+                <div class="content-card">
+                    <div class="drag-container">
+                        <div class="drop-zone" id="column-a" data-column="A">
+                            <h4 style="color: var(--color-text-muted); margin-bottom: 1rem;">Column A</h4>
+                            <div class="draggable" id="box-a" draggable="true">A</div>
+                        </div>
+                        <div class="drop-zone" id="column-b" data-column="B">
+                            <h4 style="color: var(--color-text-muted); margin-bottom: 1rem;">Column B</h4>
+                            <div class="draggable" id="box-b" draggable="true">B</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-md">Status</h3>
+                    <p id="drag-status">Boxes are in their original positions.</p>
+                    <button class="btn btn-secondary mt-md" id="reset-btn" onclick="resetDrag()">Reset
+                        Positions</button>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <p>Drag and drop can be tricky to automate. Common approaches:</p>
+                    <pre><code>// Selenium ActionChains
+actions = ActionChains(driver)
+actions.drag_and_drop(source, target).perform()
+
+// Or step by step:
+actions.click_and_hold(source)
+actions.move_to_element(target)
+actions.release()
+actions.perform()
+
+// Playwright
+await page.dragAndDrop('#box-a', '#column-b');</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropZones = document.querySelectorAll('.drop-zone');
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', function (e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                this.classList.add('dragging');
+            });
+
+            draggable.addEventListener('dragend', function () {
+                this.classList.remove('dragging');
+                updateStatus();
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', function () {
+                this.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', function (e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+
+                const id = e.dataTransfer.getData('text/plain');
+                const draggable = document.getElementById(id);
+
+                // Move the element
+                this.appendChild(draggable);
+                updateStatus();
+            });
+        });
+
+        function updateStatus() {
+            const columnA = document.getElementById('column-a');
+            const columnB = document.getElementById('column-b');
+
+            const boxesInA = Array.from(columnA.querySelectorAll('.draggable')).map(el => el.textContent);
+            const boxesInB = Array.from(columnB.querySelectorAll('.draggable')).map(el => el.textContent);
+
+            document.getElementById('drag-status').textContent =
+                `Column A contains: [${boxesInA.join(', ') || 'empty'}] | Column B contains: [${boxesInB.join(', ') || 'empty'}]`;
+        }
+
+        function resetDrag() {
+            const columnA = document.getElementById('column-a');
+            const columnB = document.getElementById('column-b');
+            const boxA = document.getElementById('box-a');
+            const boxB = document.getElementById('box-b');
+
+            // Move boxes back to original positions
+            columnA.appendChild(boxA);
+            columnB.appendChild(boxB);
+
+            updateStatus();
+        }
+    </script>
+</body>
+
+</html>

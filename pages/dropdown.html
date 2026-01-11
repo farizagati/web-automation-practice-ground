@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Ant Design-inspired Searchable Dropdown */
+        .ant-select {
+            position: relative;
+            max-width: 300px;
+            font-family: inherit;
+        }
+
+        .ant-select-selector {
+            position: relative;
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            min-height: 36px;
+            padding: 0 8px;
+            cursor: text;
+            display: flex;
+            align-items: center;
+        }
+
+        .ant-select-selector:hover {
+            border-color: var(--color-primary);
+        }
+
+        .ant-select-focused .ant-select-selector {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .ant-select-input-search {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: var(--color-text);
+            font-size: 0.875rem;
+        }
+
+        .ant-select-arrow {
+            position: absolute;
+            right: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            font-size: 12px;
+            pointer-events: none;
+            transition: transform 0.3s;
+        }
+
+        .ant-select-focused .ant-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .ant-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            margin-top: 4px;
+            max-height: 256px;
+            overflow-y: auto;
+            transform-origin: 0 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: scaleY(0.9);
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .ant-select-dropdown.open {
+            opacity: 1;
+            transform: scaleY(1);
+            pointer-events: auto;
+        }
+
+        .ant-select-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.1s;
+            font-size: 0.875rem;
+            color: var(--color-text);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ant-select-item:hover {
+            background-color: var(--color-bg-secondary);
+        }
+
+        .ant-select-item-selected {
+            background-color: rgba(99, 102, 241, 0.15);
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .ant-empty {
+            padding: 16px;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Multi-Select Specific Styles */
+        .ant-select-multiple .ant-select-selector {
+            padding: 2px 4px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .ant-select-selection-item {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 4px;
+            padding: 0 4px 0 8px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            color: var(--color-primary);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            max-width: 100%;
+        }
+
+        .ant-select-selection-item-remove {
+            color: var(--color-primary);
+            font-weight: bold;
+            display: inline-block;
+            cursor: pointer;
+            padding: 0 4px;
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .ant-select-selection-item-remove:hover {
+            color: #ef4444;
+        }
+
+        .ant-select-multiple .ant-select-input-search {
+            width: auto;
+            min-width: 4px;
+            flex-grow: 1;
+            margin-left: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Dropdown</h1>
+                <p class="page-description">Practice selecting options from dropdown menus.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Simple Dropdown</h3>
+                    <div class="select-wrapper" style="max-width: 300px;">
+                        <select class="form-select" id="dropdown" onchange="updateSelection()">
+                            <option value="" disabled selected>Please select an option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                        </select>
+                    </div>
+                    <p class="mt-md" id="selection-result">No option selected</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Multiple Select</h3>
+                    <select class="form-select" id="multi-select" multiple size="5" style="max-width: 300px;"
+                        onchange="updateMultiSelection()">
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+                        <option value="blue">Blue</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="purple">Purple</option>
+                    </select>
+                    <p class="mt-md text-muted" style="font-size: 0.875rem;">Hold Ctrl/Cmd to select multiple</p>
+                    <p class="mt-sm" id="multi-selection-result">No options selected</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Grouped Dropdown</h3>
+                    <div class="select-wrapper" style="max-width: 300px;">
+                        <select class="form-select" id="grouped-dropdown" onchange="updateGroupedSelection()">
+                            <option value="" disabled selected>Select a vehicle</option>
+                            <optgroup label="Cars">
+                                <option value="sedan">Sedan</option>
+                                <option value="suv">SUV</option>
+                                <option value="sports">Sports Car</option>
+                            </optgroup>
+                            <optgroup label="Motorcycles">
+                                <option value="cruiser">Cruiser</option>
+                                <option value="sport">Sport Bike</option>
+                            </optgroup>
+                            <optgroup label="Trucks">
+                                <option value="pickup">Pickup</option>
+                                <option value="semi">Semi Truck</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <p class="mt-md" id="grouped-selection-result">No vehicle selected</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Searchable Dropdown (Ant Design)</h3>
+                    <p class="text-muted mb-md">Type to search and select a country.</p>
+
+                    <div class="ant-select" id="country-select">
+                        <div class="ant-select-selector" onclick="toggleSearchDropdown()">
+                            <input type="text" class="ant-select-input-search" id="country-input"
+                                placeholder="Select a country" autocomplete="off">
+                            <span class="ant-select-arrow">▼</span>
+                        </div>
+                        <div class="ant-select-dropdown" id="country-list">
+                            <!-- Options will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <p class="mt-md" id="search-selection-result">No country selected</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Searchable Multi-Select (Ant Design)</h3>
+                    <p class="text-muted mb-md">Type to search and select states. Multiple selection allowed.</p>
+
+                    <div class="ant-select ant-select-multiple" id="state-select">
+                        <div class="ant-select-selector" onclick="focusMultiSearch()">
+                            <div id="selected-tags-container"></div>
+                            <input type="text" class="ant-select-input-search" id="state-input"
+                                placeholder="Select states" autocomplete="off">
+                        </div>
+                        <div class="ant-select-dropdown" id="state-list">
+                            <!-- Options will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <p class="mt-md" id="multi-search-result">No states selected</p>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Selenium (Python)
+from selenium.webdriver.support.ui import Select
+dropdown = Select(driver.find_element(By.ID, "dropdown"))
+
+# By visible text
+dropdown.select_by_visible_text("Option 1")
+
+# By value
+dropdown.select_by_value("1")
+
+# By index
+dropdown.select_by_index(0)</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function updateSelection() {
+            const dropdown = document.getElementById('dropdown');
+            const selectedOption = dropdown.options[dropdown.selectedIndex];
+            document.getElementById('selection-result').innerHTML =
+                `Selected: <strong>${selectedOption.text}</strong> (value: ${selectedOption.value})`;
+        }
+
+        function updateMultiSelection() {
+            const multiSelect = document.getElementById('multi-select');
+            const selected = Array.from(multiSelect.selectedOptions).map(opt => opt.text);
+            document.getElementById('multi-selection-result').innerHTML =
+                selected.length > 0 ? `Selected: <strong>${selected.join(', ')}</strong>` : 'No options selected';
+        }
+
+        function updateGroupedSelection() {
+            const dropdown = document.getElementById('grouped-dropdown');
+            const selectedOption = dropdown.options[dropdown.selectedIndex];
+            document.getElementById('grouped-selection-result').innerHTML =
+                `Selected: <strong>${selectedOption.text}</strong> (value: ${selectedOption.value})`;
+        }
+
+        // Searchable Dropdown Logic
+        const countries = [
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+            "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+            "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo (Democratic Republic of the)", "Congo (Republic of the)", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+            "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+            "Fiji", "Finland", "France",
+            "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+            "Haiti", "Honduras", "Hungary",
+            "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+            "Jamaica", "Japan", "Jordan",
+            "Kazakhstan", "Kenya", "Kiribati", "Korea (North)", "Korea (South)", "Kosovo", "Kuwait", "Kyrgyzstan",
+            "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+            "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway",
+            "Oman",
+            "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+            "Qatar",
+            "Romania", "Russia", "Rwanda",
+            "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+            "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
+            "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+            "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
+            "Yemen",
+            "Zambia", "Zimbabwe"
+        ];
+
+        const selectContainer = document.getElementById('country-select');
+        const input = document.getElementById('country-input');
+        const list = document.getElementById('country-list');
+        const result = document.getElementById('search-selection-result');
+        let selectedCountry = null;
+
+        function initSearchableDropdown() {
+            renderOptions(countries);
+
+            // Input handlers
+            input.addEventListener('focus', () => {
+                selectContainer.classList.add('ant-select-focused');
+                list.classList.add('open');
+            });
+
+            input.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = countries.filter(c => c.toLowerCase().includes(searchTerm));
+                renderOptions(filtered);
+                list.classList.add('open'); // Ensure open when typing
+            });
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (!selectContainer.contains(e.target)) {
+                    closeSearchDropdown();
+                }
+            });
+        }
+
+        function renderOptions(options) {
+            if (options.length === 0) {
+                list.innerHTML = `<div class="ant-empty">No Data</div>`;
+                return;
+            }
+
+            list.innerHTML = options.map(option => `
+                <div class="ant-select-item ${option === selectedCountry ? 'ant-select-item-selected' : ''}" 
+                     onclick="selectSearchOption('${option}')">
+                    ${option}
+                    ${option === selectedCountry ? '<span>✓</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function selectSearchOption(option) {
+            selectedCountry = option;
+            input.value = option;
+            result.innerHTML = `Selected: <strong>${option}</strong>`;
+            renderOptions(countries); // Reset list
+            closeSearchDropdown();
+        }
+
+        function toggleSearchDropdown() {
+            if (list.classList.contains('open')) {
+                // Do nothing if clicking input (handled by focus) or just let it stay open
+            } else {
+                input.focus();
+            }
+        }
+
+        function closeSearchDropdown() {
+            selectContainer.classList.remove('ant-select-focused');
+            list.classList.remove('open');
+            // If invalid input, reset to last valid or clear? AntD keeps text but implementation here works like simple combobox
+            if (selectedCountry && input.value !== selectedCountry) {
+                // Optional: Force reset or allow custom
+                // input.value = selectedCountry; 
+            }
+        }
+
+
+
+        // Multi-Select Searchable Logic
+        const states = [
+            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+            "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+            "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
+            "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+            "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+            "West Virginia", "Wisconsin", "Wyoming"
+        ];
+
+        const multiContainer = document.getElementById('state-select');
+        const multiInput = document.getElementById('state-input');
+        const multiList = document.getElementById('state-list');
+        const tagsContainer = document.getElementById('selected-tags-container');
+        const multiResult = document.getElementById('multi-search-result');
+        let selectedStates = [];
+
+        function initMultiSelect() {
+            renderMultiOptions(states);
+
+            multiInput.addEventListener('focus', () => {
+                multiContainer.classList.add('ant-select-focused');
+                multiList.classList.add('open');
+            });
+
+            multiInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = states.filter(s =>
+                    s.toLowerCase().includes(searchTerm) && !selectedStates.includes(s)
+                );
+                renderMultiOptions(filtered);
+                multiList.classList.add('open');
+            });
+
+            // Handle backspace to remove last tag
+            multiInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && multiInput.value === '' && selectedStates.length > 0) {
+                    removeState(selectedStates[selectedStates.length - 1]);
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!multiContainer.contains(e.target)) {
+                    multiContainer.classList.remove('ant-select-focused');
+                    multiList.classList.remove('open');
+                    multiInput.value = ''; // Reset search
+                }
+            });
+        }
+
+        function renderMultiOptions(options) {
+            // Filter out already selected options from the dropdown list
+            const available = options.filter(opt => !selectedStates.includes(opt));
+
+            if (available.length === 0) {
+                multiList.innerHTML = `<div class="ant-empty">No Data</div>`;
+                return;
+            }
+
+            multiList.innerHTML = available.map(option => `
+                <div class="ant-select-item" onclick="selectState('${option}')">
+                    ${option}
+                </div>
+            `).join('');
+        }
+
+        function selectState(state) {
+            if (!selectedStates.includes(state)) {
+                selectedStates.push(state);
+                renderTags();
+                updateMultiResult();
+                multiInput.value = '';
+                multiInput.focus();
+
+                // Re-render list with remaining options
+                renderMultiOptions(states);
+
+                // Keep dropdown open for multiple selections
+                // multiList.classList.add('open'); 
+            }
+        }
+
+        function removeState(state) {
+            selectedStates = selectedStates.filter(s => s !== state);
+            renderTags();
+            updateMultiResult();
+            renderMultiOptions(states);
+        }
+
+        function renderTags() {
+            tagsContainer.innerHTML = selectedStates.map(state => `
+                <span class="ant-select-selection-item">
+                    ${state}
+                    <span class="ant-select-selection-item-remove" onclick="event.stopPropagation(); removeState('${state}')">×</span>
+                </span>
+            `).join('');
+
+            // Adjust input placeholder
+            if (selectedStates.length > 0) {
+                multiInput.placeholder = '';
+            } else {
+                multiInput.placeholder = 'Select states';
+            }
+        }
+
+        function updateMultiResult() {
+            multiResult.innerHTML = selectedStates.length > 0
+                ? `Selected: <strong>${selectedStates.join(', ')}</strong>`
+                : 'No states selected';
+        }
+
+        function focusMultiSearch() {
+            multiInput.focus();
+        }
+
+        initMultiSelect();
+        initSearchableDropdown();
+    </script>
+</body>
+
+</html>

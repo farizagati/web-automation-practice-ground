@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Messages - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Notification Messages</h1>
+                <p class="page-description">Click the button to see a random notification appear.</p>
+                <div class="content-card">
+                    <a href="#" class="btn btn-primary" id="action-message"
+                        onclick="showNotification(); return false;">Click here!</a>
+                </div>
+                <div id="notification-area" class="mt-lg"></div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <p>Notifications may appear randomly. Handle them by:</p>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Waiting for the notification element to appear</li>
+                        <li>Checking the text content of the message</li>
+                        <li>Handling cases where notification may not appear</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const messages = [
+            { text: 'Action successful', type: 'success' },
+            { text: 'Action unsuccessful, please try again', type: 'error' },
+            { text: 'Action successful', type: 'success' },
+            { text: 'Processing...', type: 'info' },
+            { text: 'Warning: proceed with caution', type: 'warning' }
+        ];
+        function showNotification() {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${msg.type}`;
+            notification.id = 'flash';
+            notification.innerHTML = `<span>${msg.text}</span><button onclick="this.parentElement.remove()" style="margin-left: auto; background: none; border: none; cursor: pointer;">×</button>`;
+            document.getElementById('notification-area').prepend(notification);
+            setTimeout(() => notification.remove(), 5000);
+        }
+    </script>
+</body>
+
+</html>

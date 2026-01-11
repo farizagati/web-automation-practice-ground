@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Codes - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Status Codes</h1>
+                <p class="page-description">Learn about common HTTP status codes. Click a link to see details about that
+                    code.</p>
+                <div class="content-card">
+                    <h3 class="mb-lg">Available Codes</h3>
+                    <ul style="list-style: none;">
+                        <li class="mb-md"><a href="#" class="scenario-link" onclick="showStatus(200); return false;"
+                                id="link-200">200 - OK</a></li>
+                        <li class="mb-md"><a href="#" class="scenario-link" onclick="showStatus(301); return false;"
+                                id="link-301">301 - Moved Permanently</a></li>
+                        <li class="mb-md"><a href="#" class="scenario-link" onclick="showStatus(404); return false;"
+                                id="link-404">404 - Not Found</a></li>
+                        <li class="mb-md"><a href="#" class="scenario-link" onclick="showStatus(500); return false;"
+                                id="link-500">500 - Internal Server Error</a></li>
+                    </ul>
+                </div>
+                <div class="content-card" id="status-detail" style="display: none;">
+                    <h3 id="status-title"></h3>
+                    <p id="status-description" class="text-muted"></p>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const statusInfo = {
+            200: { title: '200 - OK', desc: 'The request has succeeded. The information returned depends on the method used.' },
+            301: { title: '301 - Moved Permanently', desc: 'The requested resource has been assigned a new permanent URI.' },
+            404: { title: '404 - Not Found', desc: 'The server has not found anything matching the Request-URI.' },
+            500: { title: '500 - Internal Server Error', desc: 'The server encountered an unexpected condition which prevented it from fulfilling the request.' }
+        };
+        function showStatus(code) {
+            const info = statusInfo[code];
+            document.getElementById('status-title').textContent = info.title;
+            document.getElementById('status-description').textContent = info.desc;
+            document.getElementById('status-detail').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

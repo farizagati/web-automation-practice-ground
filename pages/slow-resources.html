@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slow Resources - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Slow Resources</h1>
+                <p class="page-description">This page simulates slow-loading resources to test waiting strategies.</p>
+                <div class="content-card">
+                    <h3 class="mb-lg">Slow Content</h3>
+                    <div id="slow-content">
+                        <div class="skeleton" style="height: 100px; margin-bottom: 1rem;"></div>
+                        <div class="skeleton" style="height: 20px; width: 80%; margin-bottom: 0.5rem;"></div>
+                        <div class="skeleton" style="height: 20px; width: 60%;"></div>
+                    </div>
+                    <button class="btn btn-primary mt-lg" id="load-slow" onclick="loadSlowContent()">Load Content (3s
+                        delay)</button>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code># Set page load timeout
+driver.set_page_load_timeout(30)
+
+# Wait for specific element with longer timeout
+WebDriverWait(driver, 30).until(
+    EC.presence_of_element_located((By.ID, "loaded-content"))
+)
+
+# Poll for element
+from selenium.webdriver.support.ui import WebDriverWait
+WebDriverWait(driver, 10, poll_frequency=0.5).until(
+    EC.visibility_of_element_located((By.ID, "loaded-content"))
+)</code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function loadSlowContent() {
+            const container = document.getElementById('slow-content');
+            container.innerHTML = `<div class="flex items-center gap-md"><div class="loading-spinner"></div><span>Loading...</span></div>`;
+            setTimeout(() => {
+                container.innerHTML = `
+          <div id="loaded-content" class="notification notification-success">
+            <span>✓</span>
+            <span>Content loaded successfully after 3 second delay!</span>
+          </div>
+          <p class="mt-md">This content simulates a slow-loading resource that takes time to appear.</p>
+        `;
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

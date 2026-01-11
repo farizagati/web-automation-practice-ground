@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Remove Elements - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Add/Remove Elements</h1>
+                <p class="page-description">Practice adding and removing elements from the DOM. Great for testing
+                    dynamic element handling.</p>
+
+                <div class="content-card">
+                    <button class="btn btn-primary" id="add-element" onclick="addElement()">Add Element</button>
+                </div>
+
+                <div class="content-card" id="elements-container">
+                    <h3 class="mb-md">Elements:</h3>
+                    <div id="elements-list" class="flex flex-col gap-md"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <p>When testing dynamic elements:</p>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Use explicit waits for elements to appear</li>
+                        <li>Verify element count after adding/removing</li>
+                        <li>Handle stale element references</li>
+                        <li>Test rapid-fire add/remove operations</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let elementCount = 0;
+
+        function addElement() {
+            elementCount++;
+            const container = document.getElementById('elements-list');
+            const element = document.createElement('div');
+            element.className = 'flex items-center justify-between';
+            element.style.cssText = 'padding: 0.75rem 1rem; background: var(--color-bg-secondary); border-radius: 8px;';
+            element.id = `added-element-${elementCount}`;
+            element.innerHTML = `
+        <span>Added Element #${elementCount}</span>
+        <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;" onclick="removeElement(this)">Delete</button>
+      `;
+            container.appendChild(element);
+        }
+
+        function removeElement(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+
+</html>

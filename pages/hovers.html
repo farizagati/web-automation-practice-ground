@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hovers - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .user-card {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            transition: filter 0.3s ease;
+        }
+
+        .user-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .user-card:hover .user-avatar {
+            filter: brightness(0.5);
+        }
+
+        .user-card:hover .user-info {
+            transform: translateY(0);
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .view-profile {
+            color: var(--color-primary);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Hovers</h1>
+                <p class="page-description">Hover over the images below to reveal additional information.</p>
+
+                <div class="content-card">
+                    <div class="flex gap-lg justify-center flex-wrap">
+                        <div class="user-card" id="user-1">
+                            <div class="user-avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">👤
+                            </div>
+                            <div class="user-info">
+                                <h5 class="user-name" id="name-user-1">user1</h5>
+                                <a href="#" class="view-profile" id="link-user-1">View profile</a>
+                            </div>
+                        </div>
+
+                        <div class="user-card" id="user-2">
+                            <div class="user-avatar" style="background: linear-gradient(135deg, #22c55e, #16a34a);">👤
+                            </div>
+                            <div class="user-info">
+                                <h5 class="user-name" id="name-user-2">user2</h5>
+                                <a href="#" class="view-profile" id="link-user-2">View profile</a>
+                            </div>
+                        </div>
+
+                        <div class="user-card" id="user-3">
+                            <div class="user-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706);">👤
+                            </div>
+                            <div class="user-info">
+                                <h5 class="user-name" id="name-user-3">user3</h5>
+                                <a href="#" class="view-profile" id="link-user-3">View profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-md">Hover Status</h3>
+                    <p id="hover-status">Move your mouse over a user card...</p>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Hover using ActionChains
+from selenium.webdriver import ActionChains
+
+user = driver.find_element(By.ID, "user-1")
+actions = ActionChains(driver)
+actions.move_to_element(user).perform()
+
+# Wait for hover content to appear
+hidden_info = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.ID, "name-user-1"))
+)
+
+# Click the revealed link
+link = driver.find_element(By.ID, "link-user-1")
+link.click()
+
+// Playwright
+await page.locator('#user-1').hover();
+await page.locator('#link-user-1').click();</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const userCards = document.querySelectorAll('.user-card');
+        const hoverStatus = document.getElementById('hover-status');
+
+        userCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                const userId = this.id;
+                const userName = this.querySelector('.user-name').textContent;
+                hoverStatus.innerHTML = `Hovering over <strong style="color: var(--color-primary)">${userName}</strong>`;
+            });
+
+            card.addEventListener('mouseleave', function () {
+                hoverStatus.textContent = 'Move your mouse over a user card...';
+            });
+        });
+
+        // Handle profile clicks
+        document.querySelectorAll('.view-profile').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const userName = this.closest('.user-card').querySelector('.user-name').textContent;
+                alert(`Viewing profile of ${userName}`);
+            });
+        });
+    </script>
+</body>
+
+</html>

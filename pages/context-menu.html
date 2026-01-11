@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Menu - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Context Menu</h1>
+                <p class="page-description">Right-click on the box below to trigger a custom context menu.</p>
+
+                <div class="content-card">
+                    <div id="hot-spot" style="
+              width: 100%;
+              height: 200px;
+              background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(34, 211, 238, 0.1) 100%);
+              border: 2px dashed var(--color-primary);
+              border-radius: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: context-menu;
+            ">
+                        <span style="color: var(--color-text-muted); font-size: 1.125rem;">Right-Click Here</span>
+                    </div>
+                </div>
+
+                <!-- Custom Context Menu -->
+                <div class="context-menu" id="context-menu">
+                    <div class="context-menu-item" onclick="contextAction('cut')">✂️ Cut</div>
+                    <div class="context-menu-item" onclick="contextAction('copy')">📋 Copy</div>
+                    <div class="context-menu-item" onclick="contextAction('paste')">📄 Paste</div>
+                    <div style="height: 1px; background: var(--color-border); margin: 0.5rem 0;"></div>
+                    <div class="context-menu-item" onclick="contextAction('delete')">🗑️ Delete</div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-md">Action Log</h3>
+                    <div id="action-log"
+                        style="font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text-muted);">
+                        Waiting for context menu action...
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <p>To trigger a context menu in automation:</p>
+                    <pre><code>// Selenium (Python)
+from selenium.webdriver import ActionChains
+actions = ActionChains(driver)
+actions.context_click(element).perform()
+
+// Playwright
+await element.click({ button: 'right' });</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const hotSpot = document.getElementById('hot-spot');
+        const contextMenu = document.getElementById('context-menu');
+
+        hotSpot.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+
+            contextMenu.style.left = e.pageX + 'px';
+            contextMenu.style.top = e.pageY + 'px';
+            contextMenu.classList.add('active');
+        });
+
+        document.addEventListener('click', function () {
+            contextMenu.classList.remove('active');
+        });
+
+        function contextAction(action) {
+            const log = document.getElementById('action-log');
+            const timestamp = new Date().toLocaleTimeString();
+            log.innerHTML = `[${timestamp}] Context menu action triggered: <strong style="color: var(--color-primary)">${action}</strong>`;
+            contextMenu.classList.remove('active');
+
+            // Also show an alert for easier automation detection
+            alert(`You selected a context menu option: ${action}`);
+        }
+    </script>
+</body>
+
+</html>

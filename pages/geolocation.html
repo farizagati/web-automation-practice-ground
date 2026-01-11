@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Geolocation</h1>
+                <p class="page-description">Test geolocation API access and permission handling.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Your Location</h3>
+                    <button class="btn btn-primary" id="get-location" onclick="getLocation()">Where am I?</button>
+
+                    <div id="location-loading" class="mt-lg hidden">
+                        <div class="loading-spinner"></div>
+                    </div>
+
+                    <div id="location-result" class="mt-lg hidden">
+                        <div style="padding: 1.5rem; background: var(--color-bg-secondary); border-radius: 8px;">
+                            <div class="grid grid-cols-2 gap-md">
+                                <div>
+                                    <p class="text-muted"
+                                        style="margin: 0; font-size: 0.75rem; text-transform: uppercase;">Latitude</p>
+                                    <p id="latitude"
+                                        style="font-size: 1.5rem; font-family: var(--font-mono); margin: 0;"></p>
+                                </div>
+                                <div>
+                                    <p class="text-muted"
+                                        style="margin: 0; font-size: 0.75rem; text-transform: uppercase;">Longitude</p>
+                                    <p id="longitude"
+                                        style="font-size: 1.5rem; font-family: var(--font-mono); margin: 0;"></p>
+                                </div>
+                            </div>
+                            <a id="map-link" href="#" target="_blank" class="btn btn-secondary mt-lg"
+                                style="width: fit-content;">View on Google Maps</a>
+                        </div>
+                    </div>
+
+                    <div id="location-error" class="mt-lg hidden notification notification-error">
+                        <span>✗</span>
+                        <span id="error-text">Geolocation not available</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Override geolocation in Chrome
+options = webdriver.ChromeOptions()
+options.add_argument("--enable-geolocation")
+
+# Set mock location via DevTools
+driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "accuracy": 100
+})
+
+// Playwright - set geolocation
+await context.setGeolocation({
+    latitude: 37.7749,
+    longitude: -122.4194
+});
+await context.grantPermissions(['geolocation']);</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function getLocation() {
+            const loading = document.getElementById('location-loading');
+            const result = document.getElementById('location-result');
+            const error = document.getElementById('location-error');
+
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+            error.classList.add('hidden');
+
+            if (!navigator.geolocation) {
+                loading.classList.add('hidden');
+                error.classList.remove('hidden');
+                document.getElementById('error-text').textContent = 'Geolocation is not supported by your browser';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    loading.classList.add('hidden');
+                    result.classList.remove('hidden');
+
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lng = position.coords.longitude.toFixed(6);
+
+                    document.getElementById('latitude').textContent = lat;
+                    document.getElementById('longitude').textContent = lng;
+                    document.getElementById('map-link').href = `https://www.google.com/maps?q=${lat},${lng}`;
+                },
+                (err) => {
+                    loading.classList.add('hidden');
+                    error.classList.remove('hidden');
+
+                    let message = 'An error occurred';
+                    switch (err.code) {
+                        case err.PERMISSION_DENIED:
+                            message = 'Location permission denied by user';
+                            break;
+                        case err.POSITION_UNAVAILABLE:
+                            message = 'Location information is unavailable';
+                            break;
+                        case err.TIMEOUT:
+                            message = 'Location request timed out';
+                            break;
+                    }
+                    document.getElementById('error-text').textContent = message;
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>

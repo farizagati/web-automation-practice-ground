@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQuery UI Menus - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .menu-bar {
+            display: flex;
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+        }
+
+        .menu-item {
+            position: relative;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: var(--color-bg-card);
+        }
+
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .menu-item:hover>.submenu {
+            display: block;
+        }
+
+        .submenu-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .submenu-item:hover {
+            background: var(--color-bg-secondary);
+            color: var(--color-primary);
+        }
+
+        .submenu-item .submenu {
+            left: 100%;
+            top: 0;
+        }
+
+        .has-submenu::after {
+            content: '›';
+            position: absolute;
+            right: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">JQuery UI Menus</h1>
+                <p class="page-description">Practice navigating nested dropdown menus.</p>
+                <div class="content-card">
+                    <nav class="menu-bar" id="menu">
+                        <div class="menu-item" id="menu-enabled">Enabled
+                            <div class="submenu">
+                                <div class="submenu-item has-submenu" id="menu-downloads">Downloads
+                                    <div class="submenu">
+                                        <div class="submenu-item" id="menu-pdf" onclick="menuAction('PDF')">PDF</div>
+                                        <div class="submenu-item" id="menu-csv" onclick="menuAction('CSV')">CSV</div>
+                                        <div class="submenu-item" id="menu-excel" onclick="menuAction('Excel')">Excel
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="submenu-item" id="menu-print" onclick="menuAction('Print')">Print</div>
+                            </div>
+                        </div>
+                        <div class="menu-item" style="opacity: 0.5; cursor: not-allowed;">Disabled</div>
+                    </nav>
+                </div>
+                <div class="content-card">
+                    <h3>Action Log</h3>
+                    <div id="action-log" style="font-family: var(--font-mono);">Click a menu item...</div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function menuAction(action) {
+            document.getElementById('action-log').innerHTML = `Selected: <strong style="color: var(--color-primary)">${action}</strong>`;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkboxes - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Checkboxes</h1>
+                <p class="page-description">Practice interacting with checkbox elements. Toggle their states and verify
+                    the results.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Basic Checkboxes</h3>
+                    <div class="flex flex-col gap-md">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" class="checkbox-input" id="checkbox-1">
+                            <span class="checkbox-label">Checkbox 1 (unchecked by default)</span>
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" class="checkbox-input" id="checkbox-2" checked>
+                            <span class="checkbox-label">Checkbox 2 (checked by default)</span>
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" class="checkbox-input" id="checkbox-3">
+                            <span class="checkbox-label">Checkbox 3</span>
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" class="checkbox-input" id="checkbox-disabled" disabled>
+                            <span class="checkbox-label" style="opacity: 0.5;">Checkbox 4 (disabled)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Checkbox State</h3>
+                    <p id="checkbox-status">Current states: Checkbox 1: unchecked, Checkbox 2: checked, Checkbox 3:
+                        unchecked</p>
+                    <button class="btn btn-primary mt-md" id="check-status" onclick="updateStatus()">Update
+                        Status</button>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Use <code>.is_selected()</code> in Selenium to check state</li>
+                        <li>Clicking a checked checkbox unchecks it</li>
+                        <li>Disabled checkboxes cannot be clicked</li>
+                        <li>Verify both the attribute and visual state</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function updateStatus() {
+            const cb1 = document.getElementById('checkbox-1').checked;
+            const cb2 = document.getElementById('checkbox-2').checked;
+            const cb3 = document.getElementById('checkbox-3').checked;
+
+            document.getElementById('checkbox-status').textContent =
+                `Current states: Checkbox 1: ${cb1 ? 'checked' : 'unchecked'}, Checkbox 2: ${cb2 ? 'checked' : 'unchecked'}, Checkbox 3: ${cb3 ? 'checked' : 'unchecked'}`;
+        }
+
+        // Auto-update on change
+        document.querySelectorAll('.checkbox-input').forEach(cb => {
+            cb.addEventListener('change', updateStatus);
+        });
+    </script>
+</body>
+
+</html>

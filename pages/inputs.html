@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inputs - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Inputs</h1>
+                <p class="page-description">Practice with various input types and their behaviors.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Number Input</h3>
+                    <input type="number" class="form-input" id="number-input" placeholder="Enter a number"
+                        style="max-width: 300px;">
+                    <p class="mt-sm text-muted" id="number-result">Current value: empty</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Text Inputs</h3>
+                    <div class="flex flex-col gap-md" style="max-width: 400px;">
+                        <div class="form-group">
+                            <label class="form-label" for="text-input">Text</label>
+                            <input type="text" class="form-input" id="text-input" placeholder="Enter text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-input">Email</label>
+                            <input type="email" class="form-input" id="email-input" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password-input">Password</label>
+                            <input type="password" class="form-input" id="password-input" placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="tel-input">Telephone</label>
+                            <input type="tel" class="form-input" id="tel-input" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="url-input">URL</label>
+                            <input type="url" class="form-input" id="url-input" placeholder="Enter URL">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="search-input">Search</label>
+                            <input type="search" class="form-input" id="search-input" placeholder="Search...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Date & Time Inputs</h3>
+                    <div class="grid grid-cols-2 gap-md" style="max-width: 500px;">
+                        <div class="form-group">
+                            <label class="form-label" for="date-input">Date</label>
+                            <input type="date" class="form-input" id="date-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="time-input">Time</label>
+                            <input type="time" class="form-input" id="time-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="datetime-input">DateTime</label>
+                            <input type="datetime-local" class="form-input" id="datetime-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="month-input">Month</label>
+                            <input type="month" class="form-input" id="month-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Other Inputs</h3>
+                    <div class="flex flex-col gap-lg" style="max-width: 400px;">
+                        <div class="form-group">
+                            <label class="form-label" for="color-input">Color</label>
+                            <div class="flex items-center gap-md">
+                                <input type="color" id="color-input" value="#6366f1"
+                                    style="width: 50px; height: 50px; border: none; border-radius: 8px; cursor: pointer;">
+                                <span id="color-value">#6366f1</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="textarea-input">Textarea</label>
+                            <textarea class="form-input" id="textarea-input" rows="4"
+                                placeholder="Enter multiple lines of text..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Enter text
+element.send_keys("Hello World")
+
+// Clear and enter
+element.clear()
+element.send_keys("New value")
+
+// For number inputs, use send_keys
+number_input = driver.find_element(By.ID, "number-input")
+number_input.send_keys("42")
+
+// For date inputs
+date_input = driver.find_element(By.ID, "date-input")
+date_input.send_keys("2024-01-15")
+
+// Get current value
+value = element.get_attribute("value")</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Number input handler
+        document.getElementById('number-input').addEventListener('input', function () {
+            const result = document.getElementById('number-result');
+            result.textContent = this.value ? `Current value: ${this.value}` : 'Current value: empty';
+        });
+
+        // Color input handler
+        document.getElementById('color-input').addEventListener('input', function () {
+            document.getElementById('color-value').textContent = this.value;
+        });
+    </script>
+</body>
+
+</html>

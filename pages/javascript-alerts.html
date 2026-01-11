@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Alerts - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">JavaScript Alerts</h1>
+                <p class="page-description">Practice handling JavaScript alert, confirm, and prompt dialogs.</p>
+                <div class="content-card">
+                    <h3 class="mb-lg">Alert Types</h3>
+                    <div class="flex flex-col gap-md">
+                        <button class="btn btn-primary" id="js-alert" onclick="triggerAlert()">Click for JS
+                            Alert</button>
+                        <button class="btn btn-primary" id="js-confirm" onclick="triggerConfirm()">Click for JS
+                            Confirm</button>
+                        <button class="btn btn-primary" id="js-prompt" onclick="triggerPrompt()">Click for JS
+                            Prompt</button>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3>Result</h3>
+                    <p id="result">Waiting for action...</p>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Handle alert
+driver.find_element(By.ID, "js-alert").click()
+alert = driver.switch_to.alert
+alert.accept()
+
+// Handle confirm (accept or dismiss)
+alert = driver.switch_to.alert
+alert.accept()  # OK
+# or alert.dismiss()  # Cancel
+
+// Handle prompt
+alert = driver.switch_to.alert
+alert.send_keys("My Text")
+alert.accept()</code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        function triggerAlert() {
+            alert('I am a JS Alert');
+            document.getElementById('result').textContent = 'You successfully clicked an alert';
+        }
+        function triggerConfirm() {
+            const result = confirm('I am a JS Confirm');
+            document.getElementById('result').textContent = result ? 'You clicked: Ok' : 'You clicked: Cancel';
+        }
+        function triggerPrompt() {
+            const result = prompt('I am a JS prompt');
+            document.getElementById('result').textContent = result ? `You entered: ${result}` : 'You cancelled the prompt';
+        }
+    </script>
+</body>
+
+</html>

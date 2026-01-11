@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Testing - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title" id="page-title">A/B Testing</h1>
+                <p class="page-description">This page demonstrates A/B testing. Depending on which variant you're
+                    assigned, you'll see different content below.</p>
+
+                <div class="content-card" id="ab-content">
+                    <h3 id="variant-title">Variant A</h3>
+                    <p id="variant-description">You are viewing the control version of this page. This is the original
+                        design that most users will see.</p>
+                    <div class="mt-lg">
+                        <span class="badge" id="variant-badge">Control Group</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>How it works</h3>
+                    <p>When automated testing A/B pages, you need to handle the fact that page content may vary between
+                        runs. Common strategies include:</p>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Checking for either variant's content</li>
+                        <li>Using cookies or URL parameters to force a specific variant</li>
+                        <li>Abstracting selectors to work with both variants</li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary" id="switch-variant" onclick="switchVariant()">Switch Variant</button>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let isVariantA = true;
+
+        function switchVariant() {
+            isVariantA = !isVariantA;
+            const title = document.getElementById('variant-title');
+            const desc = document.getElementById('variant-description');
+            const badge = document.getElementById('variant-badge');
+
+            if (isVariantA) {
+                title.textContent = 'Variant A';
+                desc.textContent = 'You are viewing the control version of this page. This is the original design that most users will see.';
+                badge.textContent = 'Control Group';
+            } else {
+                title.textContent = 'Variant B';
+                desc.textContent = 'You are viewing the experimental version of this page. This variant tests a new approach to the user experience.';
+                badge.textContent = 'Test Group';
+            }
+        }
+
+        // Randomly assign variant on page load
+        if (Math.random() > 0.5) {
+            switchVariant();
+        }
+    </script>
+</body>
+
+</html>

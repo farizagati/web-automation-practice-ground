@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shifting Content - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Shifting Content</h1>
+                <p class="page-description">Content on this page shifts position randomly. Test your ability to handle
+                    moving elements.</p>
+                <div class="content-card">
+                    <h3 class="mb-lg">Shifting Menu</h3>
+                    <div class="flex gap-md flex-wrap" id="shifting-menu"></div>
+                    <button class="btn btn-secondary mt-lg" id="shuffle-menu" onclick="shuffleMenu()">Shuffle
+                        Menu</button>
+                </div>
+                <div class="content-card">
+                    <h3 class="mb-lg">Shifting Image</h3>
+                    <div id="image-container"
+                        style="position: relative; height: 150px; background: var(--color-bg-secondary); border-radius: 8px; overflow: hidden;">
+                        <div id="shifting-image"
+                            style="position: absolute; width: 80px; height: 80px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s;">
+                            📦</div>
+                    </div>
+                    <button class="btn btn-secondary mt-lg" id="shift-image" onclick="shiftImage()">Shift
+                        Position</button>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const menuItems = ['Home', 'About', 'Contact', 'Portfolio', 'Gallery'];
+        function shuffleMenu() {
+            const shuffled = [...menuItems].sort(() => Math.random() - 0.5);
+            document.getElementById('shifting-menu').innerHTML = shuffled.map((item, i) =>
+                `<button class="btn btn-secondary" id="menu-item-${i}">${item}</button>`
+            ).join('');
+        }
+        function shiftImage() {
+            const container = document.getElementById('image-container');
+            const img = document.getElementById('shifting-image');
+            const maxX = container.offsetWidth - 80;
+            const maxY = container.offsetHeight - 80;
+            img.style.left = Math.random() * maxX + 'px';
+            img.style.top = Math.random() * maxY + 'px';
+        }
+        shuffleMenu();
+        shiftImage();
+    </script>
+</body>
+
+</html>

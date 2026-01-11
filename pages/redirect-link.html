@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Link - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Redirect Link</h1>
+                <p class="page-description">Click the link below to trigger a redirect to the status codes page.</p>
+                <div class="content-card">
+                    <a href="status-codes.html" class="btn btn-primary" id="redirect">Click Here</a>
+                    <p class="mt-md text-muted">This will redirect you to Status Codes</p>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code># Wait for URL to change after redirect
+WebDriverWait(driver, 10).until(
+    EC.url_contains("status-codes")
+)
+
+# Get final URL
+final_url = driver.current_url
+
+# Playwright - wait for navigation
+await page.click('#redirect')
+await page.waitForURL('**/status-codes.html')</code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

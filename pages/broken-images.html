@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broken Images - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Broken Images</h1>
+                <p class="page-description">This page contains a mix of working and broken images. Practice detecting
+                    images that failed to load.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Image Gallery</h3>
+                    <div class="grid grid-cols-3 gap-lg">
+                        <!-- Working Image -->
+                        <div class="hover-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%236366f1' width='300' height='200'/%3E%3Ctext fill='white' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EImage 1 ✓%3C/text%3E%3C/svg%3E"
+                                alt="Valid Image 1" id="image-1" class="hover-card-image">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 1</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Valid image</p>
+                            </div>
+                        </div>
+
+                        <!-- Broken Image -->
+                        <div class="hover-card">
+                            <img src="/nonexistent/image-broken-1.jpg" alt="Broken Image 2" id="image-2"
+                                class="hover-card-image"
+                                onerror="this.style.backgroundColor='#ef4444'; this.style.display='flex'; this.alt='⚠ Broken';">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 2</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Broken image</p>
+                            </div>
+                        </div>
+
+                        <!-- Working Image -->
+                        <div class="hover-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%2322c55e' width='300' height='200'/%3E%3Ctext fill='white' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EImage 3 ✓%3C/text%3E%3C/svg%3E"
+                                alt="Valid Image 3" id="image-3" class="hover-card-image">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 3</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Valid image</p>
+                            </div>
+                        </div>
+
+                        <!-- Broken Image -->
+                        <div class="hover-card">
+                            <img src="/does/not/exist.png" alt="Broken Image 4" id="image-4" class="hover-card-image"
+                                onerror="this.style.backgroundColor='#ef4444';">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 4</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Broken image</p>
+                            </div>
+                        </div>
+
+                        <!-- Broken Image -->
+                        <div class="hover-card">
+                            <img src="http://invalid-domain-xyz.com/image.jpg" alt="Broken Image 5" id="image-5"
+                                class="hover-card-image" onerror="this.style.backgroundColor='#ef4444';">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 5</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Broken image</p>
+                            </div>
+                        </div>
+
+                        <!-- Working Image -->
+                        <div class="hover-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%2322d3ee' width='300' height='200'/%3E%3Ctext fill='white' font-family='Arial' font-size='20' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EImage 6 ✓%3C/text%3E%3C/svg%3E"
+                                alt="Valid Image 6" id="image-6" class="hover-card-image">
+                            <div class="hover-card-content">
+                                <h4 class="hover-card-title">Image 6</h4>
+                                <p class="text-muted" style="font-size: 0.875rem; margin: 0;">Valid image</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <p>To detect broken images programmatically:</p>
+                    <pre><code>// JavaScript approach
+const img = document.getElementById('image-2');
+const isBroken = img.naturalWidth === 0;
+
+// Selenium/WebDriver approach
+// Check if 'naturalWidth' > 0</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

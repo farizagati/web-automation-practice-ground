@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Loading - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Dynamic Loading</h1>
+                <p class="page-description">Content that loads after the page has rendered. Test your ability to wait
+                    for elements.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Example 1: Element on page that is hidden</h3>
+                    <p class="text-muted mb-md">The element exists but is hidden. Click start to reveal it.</p>
+                    <button class="btn btn-primary" id="start-hidden" onclick="loadHidden()">Start</button>
+                    <div id="loading-1" class="mt-lg hidden">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div id="finish-1" class="mt-lg hidden notification notification-success">
+                        <span>Hello World!</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Example 2: Element rendered after loading</h3>
+                    <p class="text-muted mb-md">The element doesn't exist until it's loaded.</p>
+                    <button class="btn btn-primary" id="start-rendered" onclick="loadRendered()">Start</button>
+                    <div id="loading-2" class="mt-lg hidden">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div id="rendered-container" class="mt-lg">
+                        <!-- Element will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Example 3: Multiple elements loading</h3>
+                    <p class="text-muted mb-md">Multiple elements load at different times.</p>
+                    <button class="btn btn-primary" id="start-multiple" onclick="loadMultiple()">Start</button>
+                    <div id="multiple-container" class="mt-lg flex flex-col gap-md">
+                        <!-- Elements will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Explicit wait for visibility
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+element = WebDriverWait(driver, 10).until(
+    EC.visibility_of_element_located((By.ID, "finish-1"))
+)
+
+// Wait for element to be present in DOM
+element = WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.ID, "finish-2"))
+)</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function loadHidden() {
+            const loading = document.getElementById('loading-1');
+            const finish = document.getElementById('finish-1');
+            const button = document.getElementById('start-hidden');
+
+            button.disabled = true;
+            loading.classList.remove('hidden');
+            finish.classList.add('hidden');
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                finish.classList.remove('hidden');
+                button.disabled = false;
+            }, 3000);
+        }
+
+        function loadRendered() {
+            const loading = document.getElementById('loading-2');
+            const container = document.getElementById('rendered-container');
+            const button = document.getElementById('start-rendered');
+
+            button.disabled = true;
+            loading.classList.remove('hidden');
+            container.innerHTML = '';
+
+            setTimeout(() => {
+                loading.classList.add('hidden');
+                container.innerHTML = `
+          <div id="finish-2" class="notification notification-success">
+            <span>Hello World!</span>
+          </div>
+        `;
+                button.disabled = false;
+            }, 3000);
+        }
+
+        function loadMultiple() {
+            const container = document.getElementById('multiple-container');
+            const button = document.getElementById('start-multiple');
+
+            button.disabled = true;
+            container.innerHTML = `
+        <div class="skeleton" style="height: 40px;"></div>
+        <div class="skeleton" style="height: 40px;"></div>
+        <div class="skeleton" style="height: 40px;"></div>
+      `;
+
+            const items = ['First item loaded', 'Second item loaded', 'Third item loaded'];
+
+            items.forEach((item, index) => {
+                setTimeout(() => {
+                    const skeletons = container.querySelectorAll('.skeleton');
+                    if (skeletons[0]) {
+                        const div = document.createElement('div');
+                        div.id = `item-${index + 1}`;
+                        div.className = 'notification notification-info';
+                        div.innerHTML = `<span>${item}</span>`;
+                        skeletons[0].replaceWith(div);
+                    }
+
+                    if (index === items.length - 1) {
+                        button.disabled = false;
+                    }
+                }, (index + 1) * 1500);
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Download & Upload - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">File Download & Upload</h1>
+                <p class="page-description">Practice file upload and download operations.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">File Download</h3>
+                    <p class="text-muted mb-md">Click to download sample files:</p>
+                    <div class="flex flex-col gap-md">
+                        <a href="#" class="btn btn-secondary" style="width: fit-content;" id="download-txt"
+                            onclick="downloadFile('sample.txt', 'text/plain', 'This is a sample text file for automation testing.\nLine 2 of the file.\nLine 3 of the file.')">
+                            📄 sample.txt
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="width: fit-content;" id="download-json"
+                            onclick="downloadFile('data.json', 'application/json', JSON.stringify({name: 'Test', value: 123, items: ['a', 'b', 'c']}, null, 2))">
+                            📋 data.json
+                        </a>
+                        <a href="#" class="btn btn-secondary" style="width: fit-content;" id="download-csv"
+                            onclick="downloadFile('data.csv', 'text/csv', 'Name,Age,City\nJohn,30,New York\nJane,25,Los Angeles\nBob,35,Chicago')">
+                            📊 data.csv
+                        </a>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">File Upload</h3>
+                    <div class="drop-zone" id="drop-zone" style="width: 100%; cursor: pointer;"
+                        onclick="document.getElementById('file-upload').click()">
+                        <span style="font-size: 2rem;">📤</span>
+                        <p style="margin: 0; color: var(--color-text-muted);">Drag & drop files here or click to browse
+                        </p>
+                        <input type="file" id="file-upload" style="display: none;" onchange="handleFileUpload(event)"
+                            multiple>
+                    </div>
+                    <div id="upload-result" class="mt-lg hidden"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Uploaded Files</h3>
+                    <div id="uploaded-files-list" style="font-family: var(--font-mono); font-size: 0.875rem;">
+                        <p class="text-muted">No files uploaded yet.</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// File upload in Selenium
+file_input = driver.find_element(By.ID, "file-upload")
+file_input.send_keys("/path/to/your/file.txt")
+
+// File download - configure browser to auto-download
+options = webdriver.ChromeOptions()
+prefs = {
+    "download.default_directory": "/path/to/download/folder",
+    "download.prompt_for_download": False
+}
+options.add_experimental_option("prefs", prefs)</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const uploadedFiles = [];
+
+        function downloadFile(filename, mimeType, content) {
+            event.preventDefault();
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            processFiles(files);
+        }
+
+        function processFiles(files) {
+            const resultDiv = document.getElementById('upload-result');
+            const listDiv = document.getElementById('uploaded-files-list');
+
+            Array.from(files).forEach(file => {
+                uploadedFiles.push({
+                    name: file.name,
+                    size: file.size,
+                    type: file.type || 'unknown',
+                    lastModified: new Date(file.lastModified).toLocaleString()
+                });
+            });
+
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = `
+        <div class="notification notification-success">
+          <span>✓</span>
+          <span>Successfully uploaded ${files.length} file(s)</span>
+        </div>
+      `;
+
+            listDiv.innerHTML = uploadedFiles.map((file, index) => `
+        <div id="uploaded-file-${index}" style="padding: 0.75rem; background: var(--color-bg-secondary); border-radius: 8px; margin-bottom: 0.5rem;">
+          <strong>${file.name}</strong><br>
+          <span class="text-muted">Size: ${formatBytes(file.size)} | Type: ${file.type}</span>
+        </div>
+      `).join('');
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Drag and drop handling
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', function () {
+            this.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            processFiles(files);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sortable Data Tables - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Sortable Data Tables</h1>
+                <p class="page-description">Click on column headers to sort the table data.</p>
+                <div class="content-card" style="overflow-x: auto;">
+                    <h3 class="mb-lg">Example 1</h3>
+                    <table class="data-table table-sortable" id="table1">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0, 'table1')">Last Name ↕</th>
+                                <th onclick="sortTable(1, 'table1')">First Name ↕</th>
+                                <th onclick="sortTable(2, 'table1')">Email ↕</th>
+                                <th onclick="sortTable(3, 'table1')">Due ↕</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Smith</td>
+                                <td>John</td>
+                                <td>jsmith@gmail.com</td>
+                                <td>$50.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                            <tr>
+                                <td>Bach</td>
+                                <td>Frank</td>
+                                <td>fbach@yahoo.com</td>
+                                <td>$51.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                            <tr>
+                                <td>Doe</td>
+                                <td>Jason</td>
+                                <td>jdoe@hotmail.com</td>
+                                <td>$100.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                            <tr>
+                                <td>Conway</td>
+                                <td>Tim</td>
+                                <td>tconway@live.com</td>
+                                <td>$50.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="content-card" style="overflow-x: auto;">
+                    <h3 class="mb-lg">Example 2</h3>
+                    <table class="data-table table-sortable" id="table2">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0, 'table2')">Last Name ↕</th>
+                                <th onclick="sortTable(1, 'table2')">First Name ↕</th>
+                                <th onclick="sortTable(2, 'table2')">Email ↕</th>
+                                <th onclick="sortTable(3, 'table2')">Due ↕</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Doe</td>
+                                <td>Jason</td>
+                                <td>jdoe@hotmail.com</td>
+                                <td>$100.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                            <tr>
+                                <td>Smith</td>
+                                <td>John</td>
+                                <td>jsmith@gmail.com</td>
+                                <td>$50.00</td>
+                                <td><a href="#edit">edit</a> <a href="#delete">delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const sortDirections = {};
+        function sortTable(column, tableId) {
+            const table = document.getElementById(tableId);
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const key = `${tableId}-${column}`;
+            sortDirections[key] = !sortDirections[key];
+            rows.sort((a, b) => {
+                const aVal = a.cells[column].textContent;
+                const bVal = b.cells[column].textContent;
+                return sortDirections[key] ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            });
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
+</body>
+
+</html>

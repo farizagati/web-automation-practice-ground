@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digest Authentication - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Digest Authentication</h1>
+                <p class="page-description">Digest authentication is similar to Basic Auth but uses MD5 hashing for
+                    added security. This is a simulation of that process.</p>
+
+                <div class="content-card" id="auth-form">
+                    <h3 class="mb-lg">Digest Auth Simulation</h3>
+                    <div class="notification notification-info mb-lg">
+                        <span>ℹ️</span>
+                        <span>In real Digest Auth, the server sends a nonce and the client must hash the credentials
+                            with it.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Enter password">
+                    </div>
+                    <div id="error-message" class="notification notification-error hidden mb-md">
+                        Authentication failed. Invalid credentials.
+                    </div>
+                    <button class="btn btn-primary" id="authenticate-btn" onclick="authenticate()">Authenticate</button>
+                </div>
+
+                <div class="content-card hidden" id="success-content">
+                    <div class="notification notification-success mb-lg">
+                        <span>✓</span>
+                        <span>Congratulations! You've successfully passed Digest Authentication.</span>
+                    </div>
+                    <h3>Protected Content</h3>
+                    <p>This simulates a page protected by Digest Authentication. In a real scenario, the browser would
+                        handle the SHA-256/MD5 challenge-response automatically.</p>
+                    <button class="btn btn-secondary mt-lg" onclick="logout()">Logout</button>
+                </div>
+
+                <div class="content-card">
+                    <h3>How Digest Auth Works</h3>
+                    <ol style="list-style: decimal; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Client requests a protected resource</li>
+                        <li>Server responds with 401 and a nonce</li>
+                        <li>Client hashes username, password, nonce, and other values</li>
+                        <li>Client sends the hash (not the plain password)</li>
+                        <li>Server verifies the hash</li>
+                    </ol>
+                    <div class="mt-lg">
+                        <p><strong>Credentials:</strong> admin / admin</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function authenticate() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            // Simulate digest auth (in reality this would involve server-side nonce)
+            if (username === 'admin' && password === 'admin') {
+                document.getElementById('auth-form').classList.add('hidden');
+                document.getElementById('success-content').classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            document.getElementById('auth-form').classList.remove('hidden');
+            document.getElementById('success-content').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') authenticate();
+        });
+    </script>
+</body>
+
+</html>

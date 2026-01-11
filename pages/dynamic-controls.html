@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Controls - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Dynamic Controls</h1>
+                <p class="page-description">Practice with controls that appear/disappear and become enabled/disabled
+                    dynamically.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Remove/Add Checkbox</h3>
+                    <div class="flex items-center gap-lg">
+                        <div id="checkbox-container">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" class="checkbox-input" id="dynamic-checkbox">
+                                <span class="checkbox-label">A checkbox</span>
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" id="checkbox-toggle" onclick="toggleCheckbox()">Remove</button>
+                    </div>
+                    <div id="checkbox-message" class="mt-md hidden notification notification-success">
+                        It's gone!
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Enable/Disable Input</h3>
+                    <div class="flex items-center gap-lg">
+                        <input type="text" class="form-input" id="dynamic-input" placeholder="Enter text here" disabled
+                            style="max-width: 300px;">
+                        <button class="btn btn-primary" id="input-toggle" onclick="toggleInput()">Enable</button>
+                    </div>
+                    <div id="input-message" class="mt-md hidden notification notification-success">
+                        It's enabled!
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Loading Indicator</h3>
+                    <p class="text-muted mb-md">Click the buttons above to see a loading state during the toggle.</p>
+                    <div id="loading-indicator" class="hidden flex items-center gap-md">
+                        <div class="loading-spinner"></div>
+                        <span>Loading...</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Wait for element to be removed
+WebDriverWait(driver, 10).until(
+    EC.staleness_of(checkbox_element)
+)
+
+// Wait for element to be enabled
+WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.ID, "input"))
+)
+
+// Wait for loading to complete
+WebDriverWait(driver, 10).until(
+    EC.invisibility_of_element_located(
+        (By.ID, "loading-indicator")
+    )
+)</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let checkboxVisible = true;
+        let inputEnabled = false;
+
+        function showLoading() {
+            document.getElementById('loading-indicator').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-indicator').classList.add('hidden');
+        }
+
+        function toggleCheckbox() {
+            const container = document.getElementById('checkbox-container');
+            const button = document.getElementById('checkbox-toggle');
+            const message = document.getElementById('checkbox-message');
+
+            showLoading();
+            button.disabled = true;
+
+            setTimeout(() => {
+                hideLoading();
+                button.disabled = false;
+
+                if (checkboxVisible) {
+                    container.innerHTML = '';
+                    button.textContent = 'Add';
+                    message.textContent = "It's gone!";
+                    message.classList.remove('hidden');
+                } else {
+                    container.innerHTML = `
+            <label class="checkbox-wrapper">
+              <input type="checkbox" class="checkbox-input" id="dynamic-checkbox">
+              <span class="checkbox-label">A checkbox</span>
+            </label>
+          `;
+                    button.textContent = 'Remove';
+                    message.textContent = "It's back!";
+                    message.classList.remove('hidden');
+                }
+
+                checkboxVisible = !checkboxVisible;
+            }, 1500);
+        }
+
+        function toggleInput() {
+            const input = document.getElementById('dynamic-input');
+            const button = document.getElementById('input-toggle');
+            const message = document.getElementById('input-message');
+
+            showLoading();
+            button.disabled = true;
+
+            setTimeout(() => {
+                hideLoading();
+                button.disabled = false;
+
+                if (!inputEnabled) {
+                    input.disabled = false;
+                    button.textContent = 'Disable';
+                    message.textContent = "It's enabled!";
+                    message.classList.remove('hidden');
+                } else {
+                    input.disabled = true;
+                    button.textContent = 'Enable';
+                    message.textContent = "It's disabled!";
+                    message.classList.remove('hidden');
+                }
+
+                inputEnabled = !inputEnabled;
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>

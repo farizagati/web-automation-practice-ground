@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exit Intent - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Exit Intent</h1>
+                <p class="page-description">Move your mouse out of the viewport (towards the browser address bar) to
+                    trigger an exit intent modal.</p>
+
+                <div class="content-card">
+                    <div class="notification notification-info mb-lg">
+                        <span>ℹ️</span>
+                        <span>Move your mouse to the top of the page (outside the viewport) to trigger the exit intent
+                            popup.</span>
+                    </div>
+                    <h3>How Exit Intent Works</h3>
+                    <p>Exit intent technology tracks mouse movement and detects when the user is about to leave the
+                        page. It's commonly used for:</p>
+                    <ul
+                        style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted); margin-top: 1rem;">
+                        <li>Last-minute discount offers</li>
+                        <li>Newsletter subscription prompts</li>
+                        <li>Preventing cart abandonment</li>
+                        <li>Survey requests</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Manual Trigger</h3>
+                    <p class="mb-md">Can't trigger with mouse? Click the button below:</p>
+                    <button class="btn btn-primary" id="trigger-exit-intent" onclick="showExitIntentModal()">Show Exit
+                        Intent Modal</button>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Simulate exit intent by moving mouse out of viewport
+from selenium.webdriver import ActionChains
+
+actions = ActionChains(driver)
+# Move mouse to coordinates outside viewport
+actions.move_by_offset(0, -100).perform()
+
+// Or trigger via JavaScript
+driver.execute_script("""
+    document.dispatchEvent(new MouseEvent('mouseout', {
+        clientY: -10
+    }));
+""")</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Exit Intent Modal -->
+    <div class="modal-overlay" id="exit-modal-overlay">
+        <div class="modal" id="exit-modal" style="position: relative; text-align: center;">
+            <button class="modal-close" id="close-exit-modal" onclick="closeExitIntentModal()">×</button>
+            <div class="modal-header">
+                <h3 class="modal-title">Wait! Before you go...</h3>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 1.125rem; margin-bottom: 1rem;">Don't leave just yet!</p>
+                <p>We detected that you're about to leave. Would you like a special offer?</p>
+                <div
+                    style="margin-top: 1.5rem; padding: 1.5rem; background: var(--color-bg-secondary); border-radius: 8px;">
+                    <p style="font-size: 1.5rem; color: var(--color-primary); font-weight: 600; margin: 0;">20% OFF</p>
+                    <p style="font-size: 0.875rem; margin: 0.5rem 0 0 0;">Use code: <code>STAYWITHUS</code></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <button class="btn btn-primary" id="accept-offer" onclick="closeExitIntentModal()">Get My
+                    Discount</button>
+                <button class="btn btn-secondary" id="decline-offer" onclick="closeExitIntentModal()">No Thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let exitIntentShown = false;
+
+        function showExitIntentModal() {
+            document.getElementById('exit-modal-overlay').classList.add('active');
+            exitIntentShown = true;
+        }
+
+        function closeExitIntentModal() {
+            document.getElementById('exit-modal-overlay').classList.remove('active');
+        }
+
+        // Detect exit intent
+        document.addEventListener('mouseout', function (e) {
+            // Check if mouse is leaving through the top of the page
+            if (e.clientY < 10 && !exitIntentShown) {
+                showExitIntentModal();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('exit-modal-overlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeExitIntentModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeExitIntentModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

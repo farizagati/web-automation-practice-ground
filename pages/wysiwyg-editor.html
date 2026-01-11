@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYSIWYG Editor - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">WYSIWYG Editor</h1>
+                <p class="page-description">Practice interacting with a rich text editor embedded in an iframe.</p>
+                <div class="content-card">
+                    <div class="mb-md flex gap-sm flex-wrap">
+                        <button class="btn btn-secondary" onclick="formatDoc('bold')"
+                            id="btn-bold"><strong>B</strong></button>
+                        <button class="btn btn-secondary" onclick="formatDoc('italic')"
+                            id="btn-italic"><em>I</em></button>
+                        <button class="btn btn-secondary" onclick="formatDoc('underline')"
+                            id="btn-underline"><u>U</u></button>
+                        <button class="btn btn-secondary" onclick="formatDoc('insertUnorderedList')" id="btn-list">•
+                            List</button>
+                        <button class="btn btn-secondary" onclick="formatDoc('insertOrderedList')" id="btn-olist">1.
+                            List</button>
+                    </div>
+                    <div class="frame-container">
+                        <iframe id="editor-frame" style="height: 250px;"></iframe>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3 class="mb-md">HTML Output</h3>
+                    <button class="btn btn-secondary mb-md" onclick="showOutput()">Get HTML</button>
+                    <pre id="html-output" style="display: none;"><code id="output-code"></code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const frame = document.getElementById('editor-frame');
+        frame.onload = function () {
+            const doc = frame.contentDocument;
+            doc.designMode = 'on';
+            doc.body.style.cssText = 'font-family: Inter, sans-serif; padding: 1rem; background: #16161d; color: #e4e4e7; min-height: 200px;';
+            doc.body.innerHTML = '<p>Your content goes here...</p>';
+        };
+        frame.src = 'about:blank';
+        function formatDoc(cmd) {
+            frame.contentDocument.execCommand(cmd, false, null);
+            frame.contentWindow.focus();
+        }
+        function showOutput() {
+            const html = frame.contentDocument.body.innerHTML;
+            document.getElementById('output-code').textContent = html;
+            document.getElementById('html-output').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Windows - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Multiple Windows</h1>
+                <p class="page-description">Practice switching between browser windows and tabs.</p>
+                <div class="content-card">
+                    <a href="new-window.html" target="_blank" class="btn btn-primary" id="open-new-window">Click
+                        Here</a>
+                    <p class="mt-md text-muted">Opens a new window/tab</p>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code># Get all window handles
+handles = driver.window_handles
+
+# Switch to new window
+driver.switch_to.window(handles[1])
+
+# Do something in new window
+# ...
+
+# Switch back to original
+driver.switch_to.window(handles[0])
+
+# Close new window
+driver.switch_to.window(handles[1])
+driver.close()
+driver.switch_to.window(handles[0])</code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

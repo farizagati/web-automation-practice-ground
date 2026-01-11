@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced XPath: SVG & Graph Elements - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Advanced XPath: SVG & Graph Elements</h1>
+                <p class="page-description">This challenge requires special XPath syntax to interact with SVG elements
+                    due to XML namespace handling.</p>
+
+                <!-- Why SVG XPath is Difficult -->
+                <div class="content-card"
+                    style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%); border-color: rgba(245, 158, 11, 0.3);">
+                    <h3 style="color: #f59e0b;" class="mb-lg">⚠️ The Challenge: XML Namespaces</h3>
+                    <p>SVG elements use the <code>http://www.w3.org/2000/svg</code> namespace. Standard XPath queries
+                        often fail because:</p>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted); margin: 1rem 0;">
+                        <li>XPath treats namespaced elements differently than HTML</li>
+                        <li><code>//svg</code> won't match <code>&lt;svg xmlns="..."&gt;</code></li>
+                        <li>You must use <code>local-name()</code> or namespace-aware queries</li>
+                    </ul>
+                    <div
+                        style="padding: 1rem; background: var(--color-bg-secondary); border-radius: 8px; margin-top: 1rem;">
+                        <p style="margin: 0; font-family: var(--font-mono); font-size: 0.875rem;">
+                            <span style="color: #ef4444;">❌ FAILS:</span> <code>//svg/circle</code><br>
+                            <span style="color: #22c55e;">✓ WORKS:</span>
+                            <code>//*[local-name()='svg']//*[local-name()='circle']</code>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Interactive SVG Chart -->
+                <div class="content-card">
+                    <h3 class="mb-lg">Interactive Bar Chart</h3>
+                    <p class="text-muted mb-md">Hover over the circles (data points) to see tooltips. Each element has
+                        unique attributes for targeting.</p>
+
+                    <div class="svg-chart-container">
+                        <svg id="bar-chart" class="svg-chart" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background grid -->
+                            <g id="grid">
+                                <line x1="50" y1="250" x2="480" y2="250" stroke="#27272a" stroke-width="1" />
+                                <line x1="50" y1="200" x2="480" y2="200" stroke="#27272a" stroke-width="1"
+                                    stroke-dasharray="4" />
+                                <line x1="50" y1="150" x2="480" y2="150" stroke="#27272a" stroke-width="1"
+                                    stroke-dasharray="4" />
+                                <line x1="50" y1="100" x2="480" y2="100" stroke="#27272a" stroke-width="1"
+                                    stroke-dasharray="4" />
+                                <line x1="50" y1="50" x2="480" y2="50" stroke="#27272a" stroke-width="1"
+                                    stroke-dasharray="4" />
+                                <line x1="50" y1="50" x2="50" y2="250" stroke="#27272a" stroke-width="1" />
+                            </g>
+
+                            <!-- Y-axis labels -->
+                            <g id="y-labels" fill="#71717a" font-size="12" font-family="Inter, sans-serif">
+                                <text x="40" y="255" text-anchor="end">0</text>
+                                <text x="40" y="205" text-anchor="end">25</text>
+                                <text x="40" y="155" text-anchor="end">50</text>
+                                <text x="40" y="105" text-anchor="end">75</text>
+                                <text x="40" y="55" text-anchor="end">100</text>
+                            </g>
+
+                            <!-- Bar chart bars -->
+                            <g id="bars">
+                                <rect id="bar-jan" class="chart-bar" x="70" y="130" width="50" height="120"
+                                    fill="#6366f1" rx="4" data-month="January" data-value="60" />
+                                <rect id="bar-feb" class="chart-bar" x="140" y="90" width="50" height="160"
+                                    fill="#8b5cf6" rx="4" data-month="February" data-value="80" />
+                                <rect id="bar-mar" class="chart-bar" x="210" y="110" width="50" height="140"
+                                    fill="#a855f7" rx="4" data-month="March" data-value="70" />
+                                <rect id="bar-apr" class="chart-bar" x="280" y="50" width="50" height="200"
+                                    fill="#d946ef" rx="4" data-month="April" data-value="100" />
+                                <rect id="bar-may" class="chart-bar" x="350" y="170" width="50" height="80"
+                                    fill="#ec4899" rx="4" data-month="May" data-value="40" />
+                                <rect id="bar-jun" class="chart-bar" x="420" y="150" width="50" height="100"
+                                    fill="#f43f5e" rx="4" data-month="June" data-value="50" />
+                            </g>
+
+                            <!-- Data point circles - HOVER THESE FOR TOOLTIPS -->
+                            <g id="data-points">
+                                <circle id="point-jan" class="data-point" cx="95" cy="130" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="January" data-value="60" />
+                                <circle id="point-feb" class="data-point" cx="165" cy="90" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="February" data-value="80" />
+                                <circle id="point-mar" class="data-point" cx="235" cy="110" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="March" data-value="70" />
+                                <circle id="point-apr" class="data-point" cx="305" cy="50" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="April" data-value="100" />
+                                <circle id="point-may" class="data-point" cx="375" cy="170" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="May" data-value="40" />
+                                <circle id="point-jun" class="data-point" cx="445" cy="150" r="8" fill="#22d3ee"
+                                    stroke="#0a0a0f" stroke-width="2" data-month="June" data-value="50" />
+                            </g>
+
+                            <!-- Connecting path -->
+                            <path id="trend-line" class="chart-path"
+                                d="M 95 130 L 165 90 L 235 110 L 305 50 L 375 170 L 445 150" fill="none"
+                                stroke="#22d3ee" stroke-width="2" stroke-dasharray="5,5" />
+
+                            <!-- X-axis labels -->
+                            <g id="x-labels" fill="#71717a" font-size="11" font-family="Inter, sans-serif">
+                                <text x="95" y="270" text-anchor="middle">Jan</text>
+                                <text x="165" y="270" text-anchor="middle">Feb</text>
+                                <text x="235" y="270" text-anchor="middle">Mar</text>
+                                <text x="305" y="270" text-anchor="middle">Apr</text>
+                                <text x="375" y="270" text-anchor="middle">May</text>
+                                <text x="445" y="270" text-anchor="middle">Jun</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div class="svg-tooltip" id="svg-tooltip"></div>
+                </div>
+
+                <!-- XPath Examples -->
+                <div class="content-card">
+                    <h3 class="mb-lg">XPath Solutions for SVG</h3>
+
+                    <div class="mb-lg">
+                        <h4 style="color: var(--color-primary);">Target the SVG Root</h4>
+                        <pre><code>//*[local-name()='svg']
+//*[name()='svg']
+//svg:svg (with namespace prefix registered)</code></pre>
+                    </div>
+
+                    <div class="mb-lg">
+                        <h4 style="color: var(--color-primary);">Target Circle Elements</h4>
+                        <pre><code>//*[local-name()='circle']
+//*[local-name()='svg']//*[local-name()='circle']
+//*[local-name()='circle'][@id='point-apr']</code></pre>
+                    </div>
+
+                    <div class="mb-lg">
+                        <h4 style="color: var(--color-primary);">Target by Data Attributes</h4>
+                        <pre><code>//*[local-name()='circle'][@data-value='100']
+//*[local-name()='rect'][@data-month='April']</code></pre>
+                    </div>
+
+                    <div class="mb-lg">
+                        <h4 style="color: var(--color-primary);">Target Path Elements</h4>
+                        <pre><code>//*[local-name()='path'][@id='trend-line']
+//*[local-name()='path'][contains(@d, 'M 95')]</code></pre>
+                    </div>
+                </div>
+
+                <!-- Testing Code -->
+                <div class="content-card">
+                    <h3 class="mb-lg">Automation Code Examples</h3>
+                    <pre><code># Selenium Python - Find SVG circle
+circle = driver.find_element(
+    By.XPATH, 
+    "//*[local-name()='circle'][@id='point-apr']"
+)
+
+# Get data attribute
+month = circle.get_attribute("data-month")  # "April"
+value = circle.get_attribute("data-value")  # "100"
+
+# Hover to trigger tooltip
+from selenium.webdriver import ActionChains
+actions = ActionChains(driver)
+actions.move_to_element(circle).perform()
+
+# Verify tooltip appeared
+tooltip = WebDriverWait(driver, 5).until(
+    EC.visibility_of_element_located((By.ID, "svg-tooltip"))
+)
+
+# Playwright
+const circle = await page.locator('circle#point-apr');
+await circle.hover();
+await expect(page.locator('#svg-tooltip')).toBeVisible();</code></pre>
+                </div>
+
+                <!-- Element Finder -->
+                <div class="content-card">
+                    <h3 class="mb-lg">Element Inspector</h3>
+                    <p class="text-muted mb-md">Hover over SVG elements above to see their details here:</p>
+                    <div id="element-inspector"
+                        style="padding: 1rem; background: var(--color-bg-secondary); border-radius: 8px; font-family: var(--font-mono); font-size: 0.875rem;">
+                        <span class="text-muted">Move cursor over chart elements...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const tooltip = document.getElementById('svg-tooltip');
+        const inspector = document.getElementById('element-inspector');
+        const dataPoints = document.querySelectorAll('.data-point');
+        const bars = document.querySelectorAll('.chart-bar');
+
+        // Add hover effects to circles
+        dataPoints.forEach(point => {
+            point.style.cursor = 'pointer';
+            point.style.transition = 'all 0.2s';
+
+            point.addEventListener('mouseenter', function (e) {
+                const month = this.getAttribute('data-month');
+                const value = this.getAttribute('data-value');
+
+                // Show tooltip
+                tooltip.innerHTML = `<strong>${month}</strong>: ${value}`;
+                tooltip.classList.add('visible');
+
+                // Highlight circle
+                this.setAttribute('r', '12');
+                this.setAttribute('fill', '#f59e0b');
+
+                // Update inspector
+                inspector.innerHTML = `
+          <div><strong>Element:</strong> &lt;circle&gt;</div>
+          <div><strong>ID:</strong> ${this.id}</div>
+          <div><strong>data-month:</strong> ${month}</div>
+          <div><strong>data-value:</strong> ${value}</div>
+          <div><strong>XPath:</strong> //*[local-name()='circle'][@id='${this.id}']</div>
+        `;
+            });
+
+            point.addEventListener('mousemove', function (e) {
+                tooltip.style.left = e.pageX + 15 + 'px';
+                tooltip.style.top = e.pageY + 15 + 'px';
+            });
+
+            point.addEventListener('mouseleave', function () {
+                tooltip.classList.remove('visible');
+                this.setAttribute('r', '8');
+                this.setAttribute('fill', '#22d3ee');
+            });
+        });
+
+        // Add hover effects to bars
+        bars.forEach(bar => {
+            bar.style.cursor = 'pointer';
+            bar.style.transition = 'opacity 0.2s';
+
+            bar.addEventListener('mouseenter', function () {
+                const month = this.getAttribute('data-month');
+                const value = this.getAttribute('data-value');
+                this.style.opacity = '0.8';
+
+                inspector.innerHTML = `
+          <div><strong>Element:</strong> &lt;rect&gt;</div>
+          <div><strong>ID:</strong> ${this.id}</div>
+          <div><strong>data-month:</strong> ${month}</div>
+          <div><strong>data-value:</strong> ${value}</div>
+          <div><strong>XPath:</strong> //*[local-name()='rect'][@id='${this.id}']</div>
+        `;
+            });
+
+            bar.addEventListener('mouseleave', function () {
+                this.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Slider - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Horizontal Slider</h1>
+                <p class="page-description">Practice interacting with range input sliders.</p>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Basic Slider</h3>
+                    <div class="slider-wrapper">
+                        <span class="text-muted">0</span>
+                        <input type="range" class="slider-input" id="slider" min="0" max="5" value="0" step="0.5"
+                            oninput="updateSliderValue()">
+                        <span class="text-muted">5</span>
+                        <span class="slider-value" id="slider-value">0</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">Volume Control</h3>
+                    <div class="slider-wrapper">
+                        <span style="font-size: 1.25rem;">🔈</span>
+                        <input type="range" class="slider-input" id="volume-slider" min="0" max="100" value="50"
+                            oninput="updateVolumeValue()">
+                        <span style="font-size: 1.25rem;">🔊</span>
+                        <span class="slider-value" id="volume-value">50%</span>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="mb-lg">RGB Color Mixer</h3>
+                    <div class="flex flex-col gap-lg">
+                        <div class="slider-wrapper">
+                            <span style="color: #ef4444;">R</span>
+                            <input type="range" class="slider-input" id="red-slider" min="0" max="255" value="99"
+                                style="accent-color: #ef4444;" oninput="updateColor()">
+                            <span class="slider-value" id="red-value">99</span>
+                        </div>
+                        <div class="slider-wrapper">
+                            <span style="color: #22c55e;">G</span>
+                            <input type="range" class="slider-input" id="green-slider" min="0" max="255" value="102"
+                                style="accent-color: #22c55e;" oninput="updateColor()">
+                            <span class="slider-value" id="green-value">102</span>
+                        </div>
+                        <div class="slider-wrapper">
+                            <span style="color: #3b82f6;">B</span>
+                            <input type="range" class="slider-input" id="blue-slider" min="0" max="255" value="241"
+                                style="accent-color: #3b82f6;" oninput="updateColor()">
+                            <span class="slider-value" id="blue-value">241</span>
+                        </div>
+                        <div id="color-preview"
+                            style="height: 80px; border-radius: 8px; background: rgb(99, 102, 241);"></div>
+                        <p class="text-center" id="color-hex" style="font-family: var(--font-mono);">#6366F1</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code>// Set slider value directly
+slider = driver.find_element(By.ID, "slider")
+driver.execute_script("arguments[0].value = 3", slider)
+# Trigger change event
+driver.execute_script("arguments[0].dispatchEvent(new Event('input'))", slider)
+
+// Using keyboard
+slider.click()
+slider.send_keys(Keys.ARROW_RIGHT)  # Increment
+slider.send_keys(Keys.ARROW_LEFT)   # Decrement
+
+// Using ActionChains
+actions = ActionChains(driver)
+actions.click_and_hold(slider).move_by_offset(50, 0).release().perform()</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function updateSliderValue() {
+            const slider = document.getElementById('slider');
+            document.getElementById('slider-value').textContent = slider.value;
+        }
+
+        function updateVolumeValue() {
+            const slider = document.getElementById('volume-slider');
+            document.getElementById('volume-value').textContent = slider.value + '%';
+        }
+
+        function updateColor() {
+            const r = document.getElementById('red-slider').value;
+            const g = document.getElementById('green-slider').value;
+            const b = document.getElementById('blue-slider').value;
+
+            document.getElementById('red-value').textContent = r;
+            document.getElementById('green-value').textContent = g;
+            document.getElementById('blue-value').textContent = b;
+
+            document.getElementById('color-preview').style.background = `rgb(${r}, ${g}, ${b})`;
+            document.getElementById('color-hex').textContent = '#' +
+                [r, g, b].map(x => parseInt(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+        }
+    </script>
+</body>
+
+</html>

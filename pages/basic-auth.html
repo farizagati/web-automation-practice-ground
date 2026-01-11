@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Auth - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Basic Authentication</h1>
+                <p class="page-description">Simulate HTTP Basic Authentication. Enter the credentials to access the
+                    protected content.</p>
+
+                <!-- Login Form (shown when not authenticated) -->
+                <div class="content-card" id="login-form">
+                    <h3 class="mb-lg">Authentication Required</h3>
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Enter password">
+                    </div>
+                    <div id="error-message" class="notification notification-error hidden mb-md">
+                        Invalid credentials. Please try again.
+                    </div>
+                    <button class="btn btn-primary" id="login-button" onclick="authenticate()">Login</button>
+                </div>
+
+                <!-- Protected Content (shown when authenticated) -->
+                <div class="content-card hidden" id="protected-content">
+                    <div class="notification notification-success mb-lg">
+                        <span>✓</span>
+                        <span>Congratulations! You've successfully authenticated.</span>
+                    </div>
+                    <h3>Protected Content</h3>
+                    <p>Welcome to the protected area. This content is only visible after successful authentication.</p>
+                    <p class="mt-md"><strong>User:</strong> <span id="logged-user">admin</span></p>
+                    <button class="btn btn-secondary mt-lg" id="logout-button" onclick="logout()">Logout</button>
+                </div>
+
+                <div class="content-card">
+                    <h3>Credentials</h3>
+                    <p><strong>Username:</strong> <code>admin</code></p>
+                    <p><strong>Password:</strong> <code>admin</code></p>
+                    <div class="mt-lg">
+                        <h3>Testing Tips</h3>
+                        <p>For real Basic Auth, credentials are typically passed in the URL:</p>
+                        <pre><code>http://admin:admin@example.com/protected</code></pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function authenticate() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (username === 'admin' && password === 'admin') {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('protected-content').classList.remove('hidden');
+                document.getElementById('logged-user').textContent = username;
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('protected-content').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Handle Enter key
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                authenticate();
+            }
+        });
+    </script>
+</body>
+
+</html>

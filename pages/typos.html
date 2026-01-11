@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typos - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Typos</h1>
+                <p class="page-description">This page contains text with intentional typos that change on reload.</p>
+                <div class="content-card">
+                    <h3 class="mb-lg">Sample Text</h3>
+                    <p id="typo-text"></p>
+                </div>
+                <div class="content-card">
+                    <button class="btn btn-primary" id="regenerate-typos" onclick="generateText()">Regenerate
+                        Text</button>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Challenge</h3>
+                    <p class="text-muted">The text may have typos that appear randomly. Your tests should handle
+                        variations in text content. Sometimes the text is correct, sometimes it has typos.</p>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const textVersions = [
+            "Sometimes you'll see a typo, other times you won't.",
+            "Sometimes you'll see a typo, other times you wont.",
+            "Sometimes you'll see a typo, other times you won't.",
+            "Somtimes you'll see a typo, other times you won't."
+        ];
+        function generateText() {
+            document.getElementById('typo-text').textContent = textVersions[Math.floor(Math.random() * textVersions.length)];
+        }
+        generateText();
+    </script>
+</body>
+
+</html>

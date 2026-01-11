@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Presses - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Key Presses</h1>
+                <p class="page-description">Press any key to see the key code.</p>
+                <div class="content-card">
+                    <label class="form-label" for="target">Key Press Input</label>
+                    <input type="text" class="form-input" id="target" placeholder="Click here and press a key"
+                        autocomplete="off">
+                </div>
+                <div class="content-card" id="result-container" style="display: none;">
+                    <h3>You pressed:</h3>
+                    <p id="result"
+                        style="font-size: 1.5rem; font-family: var(--font-mono); color: var(--color-primary);"></p>
+                </div>
+                <div class="content-card">
+                    <h3>Key History</h3>
+                    <div id="key-history" style="font-family: var(--font-mono); font-size: 0.875rem;"></div>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <pre><code># Selenium
+from selenium.webdriver.common.keys import Keys
+element.send_keys(Keys.ENTER)
+element.send_keys(Keys.TAB)
+element.send_keys(Keys.BACK_SPACE)
+
+# Playwright
+await page.keyboard.press('Enter')
+await page.keyboard.type('Hello')</code></pre>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        const keyHistory = [];
+        document.getElementById('target').addEventListener('keydown', function (e) {
+            e.preventDefault();
+            const keyName = e.key;
+            document.getElementById('result').textContent = keyName;
+            document.getElementById('result-container').style.display = 'block';
+            keyHistory.unshift(`${keyName} (code: ${e.keyCode})`);
+            if (keyHistory.length > 10) keyHistory.pop();
+            document.getElementById('key-history').innerHTML = keyHistory.map(k => `<div>${k}</div>`).join('');
+        });
+    </script>
+</body>
+
+</html>

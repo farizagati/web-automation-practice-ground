@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Automation Practice Ground - A comprehensive web testing playground for practicing test automation. Features 40+ interactive scenarios including forms, dynamic content, drag-and-drop, and more.">
+  <title>Automation Practice Ground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+      <div class="container header-content">
+        <a href="index.html" class="logo">
+          <span>Automation Practice Ground</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+          <span class="badge">Test Automation Playground</span>
+          <h1>Automation Practice Ground</h1>
+          <p>A comprehensive collection of web elements and scenarios for practicing your test automation skills.
+            Inspired by the classic 'the-internet' with a modern touch.</p>
+        </section>
+
+        <!-- Available Examples -->
+        <section class="scenarios-section">
+          <h2 class="section-title">Available Examples</h2>
+          <ul class="scenario-list" id="scenario-list">
+            <li class="scenario-item">
+              <a href="pages/ab-testing.html" class="scenario-link" id="link-ab-testing">A/B Testing</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/add-remove-elements.html" class="scenario-link" id="link-add-remove">Add/Remove
+                Elements</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/basic-auth.html" class="scenario-link" id="link-basic-auth">Basic Auth (user/pass:
+                admin/admin)</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/broken-images.html" class="scenario-link" id="link-broken-images">Broken Images</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/challenging-dom.html" class="scenario-link" id="link-challenging-dom">Challenging DOM</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/checkboxes.html" class="scenario-link" id="link-checkboxes">Checkboxes</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/context-menu.html" class="scenario-link" id="link-context-menu">Context Menu</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/digest-auth.html" class="scenario-link" id="link-digest-auth">Digest Authentication</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/disappearing-elements.html" class="scenario-link" id="link-disappearing">Disappearing
+                Elements</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/drag-and-drop.html" class="scenario-link" id="link-drag-drop">Drag and Drop</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/dropdown.html" class="scenario-link" id="link-dropdown">Dropdown</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/dynamic-content.html" class="scenario-link" id="link-dynamic-content">Dynamic Content</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/dynamic-controls.html" class="scenario-link" id="link-dynamic-controls">Dynamic
+                Controls</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/dynamic-loading.html" class="scenario-link" id="link-dynamic-loading">Dynamic Loading</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/entry-ad.html" class="scenario-link" id="link-entry-ad">Entry Ad</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/exit-intent.html" class="scenario-link" id="link-exit-intent">Exit Intent</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/file-download-upload.html" class="scenario-link" id="link-file">File Download & Upload</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/floating-menu.html" class="scenario-link" id="link-floating-menu">Floating Menu</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/forgot-password.html" class="scenario-link" id="link-forgot-password">Forgot Password</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/form-auth.html" class="scenario-link" id="link-form-auth">Form Authentication</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/frames.html" class="scenario-link" id="link-frames">Frames (Nested & iFrames)</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/geolocation.html" class="scenario-link" id="link-geolocation">Geolocation</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/horizontal-slider.html" class="scenario-link" id="link-slider">Horizontal Slider</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/hovers.html" class="scenario-link" id="link-hovers">Hovers</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/infinite-scroll.html" class="scenario-link" id="link-infinite-scroll">Infinite Scroll</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/inputs.html" class="scenario-link" id="link-inputs">Inputs</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/jquery-ui-menus.html" class="scenario-link" id="link-jquery-menus">JQuery UI Menus</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/javascript-alerts.html" class="scenario-link" id="link-js-alerts">JavaScript Alerts</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/key-presses.html" class="scenario-link" id="link-key-presses">Key Presses</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/large-deep-dom.html" class="scenario-link" id="link-large-dom">Large & Deep DOM</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/multiple-windows.html" class="scenario-link" id="link-windows">Multiple Windows</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/notification-messages.html" class="scenario-link" id="link-notifications">Notification
+                Messages</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/redirect-link.html" class="scenario-link" id="link-redirect">Redirect Link</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/shadow-dom.html" class="scenario-link" id="link-shadow-dom">Shadow DOM</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/shifting-content.html" class="scenario-link" id="link-shifting">Shifting Content</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/slow-resources.html" class="scenario-link" id="link-slow">Slow Resources</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/sortable-tables.html" class="scenario-link" id="link-tables">Sortable Data Tables</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/status-codes.html" class="scenario-link" id="link-status-codes">Status Codes</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/typos.html" class="scenario-link" id="link-typos">Typos</a>
+            </li>
+            <li class="scenario-item">
+              <a href="pages/wysiwyg-editor.html" class="scenario-link" id="link-wysiwyg">WYSIWYG Editor</a>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Advanced XPath Section -->
+        <section class="special-section">
+          <h2 class="section-title">⚡ Advanced Challenge</h2>
+          <p class="mb-lg">These scenarios require advanced automation techniques that go beyond basic element
+            selection.</p>
+          <ul class="scenario-list">
+            <li class="scenario-item">
+              <a href="pages/svg-xpath.html" class="scenario-link" id="link-svg-xpath">
+                Advanced XPath: SVG & Graph Elements
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Built for automation testing practice • Inspired by <a
+            href="https://the-internet.herokuapp.com" target="_blank" rel="noopener">the-internet</a> • © 2026 <a
+            href="https://sociabuzz.com/farizagati">Fariz Agati</a></p>
+      </div>
+    </footer>
+  </div>
+</body>
+
+</html>

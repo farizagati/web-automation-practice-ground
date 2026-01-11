@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Authentication - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo">
+                    <span>Automation Practice Ground</span>
+                </a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Form Authentication</h1>
+                <p class="page-description">Login to the secure area using the provided credentials.</p>
+
+                <div class="content-card" id="login-form" style="max-width: 500px;">
+                    <h3 class="mb-lg">Login Page</h3>
+
+                    <div id="flash-messages"></div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" class="form-input" id="password" placeholder="Enter password">
+                    </div>
+                    <button class="btn btn-primary w-full" id="login-button" onclick="login()">Login</button>
+
+                    <div class="mt-lg"
+                        style="padding: 1rem; background: var(--color-bg-secondary); border-radius: 8px;">
+                        <p class="text-muted" style="margin: 0; font-size: 0.875rem;">
+                            <strong>Credentials:</strong><br>
+                            Username: <code>tomsmith</code><br>
+                            Password: <code>SuperSecretPassword!</code>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="content-card hidden" id="secure-area" style="max-width: 500px;">
+                    <div id="secure-flash"></div>
+                    <h3>Secure Area</h3>
+                    <p>Welcome to the Secure Area. When you are done, click the logout button below.</p>
+                    <button class="btn btn-danger mt-lg" id="logout-button" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function showFlash(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const typeClass = type === 'success' ? 'notification-success' : 'notification-error';
+            container.innerHTML = `
+        <div class="notification ${typeClass} mb-md" id="flash">
+          <span>${type === 'success' ? '✓' : '✗'}</span>
+          <span>${message}</span>
+          <button onclick="this.parentElement.remove()" style="margin-left: auto; background: none; border: none; color: inherit; cursor: pointer;">×</button>
+        </div>
+      `;
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username) {
+                showFlash('flash-messages', 'Your username is invalid!', 'error');
+                return;
+            }
+
+            if (!password) {
+                showFlash('flash-messages', 'Your password is invalid!', 'error');
+                return;
+            }
+
+            if (username === 'tomsmith' && password === 'SuperSecretPassword!') {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('secure-area').classList.remove('hidden');
+                showFlash('secure-flash', 'You logged into a secure area!', 'success');
+            } else {
+                showFlash('flash-messages', 'Your username is invalid!', 'error');
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('secure-area').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showFlash('flash-messages', 'You logged out of the secure area!', 'success');
+        }
+
+        document.getElementById('password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+</body>
+
+</html>

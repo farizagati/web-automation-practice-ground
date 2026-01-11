@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Large & Deep DOM - Automation Practice Ground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container header-content">
+                <a href="../index.html" class="logo"><span>Automation Practice Ground</span></a>
+                <a href="../index.html" class="back-link">← Back to list</a>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="container">
+                <h1 class="page-title">Large & Deep DOM</h1>
+                <p class="page-description">This page contains a deeply nested DOM structure to test performance.</p>
+                <div class="content-card">
+                    <p>Total elements: <strong id="element-count">0</strong></p>
+                    <p>Maximum depth: <strong>50 levels</strong></p>
+                    <p>Siblings per level: <strong>50 elements</strong></p>
+                </div>
+                <div class="content-card">
+                    <h3>Deep Nested Structure</h3>
+                    <div id="deep-dom"
+                        style="max-height: 400px; overflow: auto; padding: 1rem; background: var(--color-bg-secondary); border-radius: 8px; font-family: var(--font-mono); font-size: 0.75rem;">
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h3>Testing Tips</h3>
+                    <ul style="list-style: disc; padding-left: 1.5rem; color: var(--color-text-muted);">
+                        <li>Use specific selectors to avoid slow DOM traversal</li>
+                        <li>Avoid using * in XPath queries</li>
+                        <li>Use ID selectors when possible</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted">Automation Practice Ground • © 2026 Fariz Agati</p>
+            </div>
+        </footer>
+    </div>
+    <script>
+        let totalElements = 0;
+        function createDeepDOM(parent, depth, maxDepth) {
+            if (depth > maxDepth) return;
+            const div = document.createElement('div');
+            div.id = `sibling-${depth}.1`;
+            div.className = `level-${depth}`;
+            div.style.paddingLeft = '10px';
+            div.style.borderLeft = '1px solid var(--color-border)';
+            div.style.marginTop = '4px';
+            div.innerHTML = `<span style="color: var(--color-primary);">Level ${depth}</span>`;
+            parent.appendChild(div);
+            totalElements++;
+            createDeepDOM(div, depth + 1, maxDepth);
+        }
+        const container = document.getElementById('deep-dom');
+        createDeepDOM(container, 1, 50);
+        for (let i = 0; i < 50; i++) {
+            const sibling = document.createElement('div');
+            sibling.id = `sibling-1.${i + 2}`;
+            sibling.textContent = `Sibling ${i + 2}`;
+            sibling.style.color = 'var(--color-text-muted)';
+            container.appendChild(sibling);
+            totalElements++;
+        }
+        document.getElementById('element-count').textContent = totalElements;
+    </script>
+</body>
+
+</html>

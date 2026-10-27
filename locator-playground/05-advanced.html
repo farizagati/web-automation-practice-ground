@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Techniques</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header"><a href="index.html" class="site-name">Locator Playground</a></header>
+<main class="wrap">
+<h1>Advanced Techniques</h1>
+<h2>Tabs</h2>
+<ul class="tabs">
+  <li class="tab-profile active">Profile</li>
+  <li class="tab-security">Security</li>
+  <li class="tab-billing">Billing</li>
+</ul>
+
+<h2>Menus</h2>
+<div class="menu">
+  <h3>Account</h3>
+  <ul>
+    <li class="menu-item">Account item 1</li>
+    <li class="menu-item">Account item 2</li>
+    <li class="menu-item">Account item 3</li>
+  </ul>
+</div>
+<div class="menu">
+  <h3>Store</h3>
+  <ul>
+    <li class="menu-item">Store item 1</li>
+    <li class="menu-item">Store item 2</li>
+    <li class="menu-item">Store item 3</li>
+  </ul>
+</div>
+<div class="menu">
+  <h3>Support</h3>
+  <ul>
+    <li class="menu-item">Support item 1</li>
+    <li class="menu-item">Support item 2</li>
+    <li class="menu-item">Support item 3</li>
+  </ul>
+</div>
+
+<h2>Profile</h2>
+<div class="profile">
+  <div class="first-name" id="name-holder">Budi</div>
+  <button type="submit" name="edit">Save profile</button>
+  <button type="button" name="edit">Edit photo</button>
+  <button id="btn-save-a81f" type="button">Save changes</button>
+</div>
+
+<button id="switch-layout" type="button">Switch layout</button>
+<button id="change-id" type="button">Change ID</button>
+
+<script>
+  document.getElementById('switch-layout').addEventListener('click', () => {
+    const old = document.getElementById('name-holder');
+    const el = document.createElement(old.tagName === 'DIV' ? 'span' : 'div');
+    el.className = 'first-name';
+    el.id = 'name-holder';
+    el.textContent = old.textContent;
+    old.replaceWith(el);
+  });
+  document.getElementById('change-id').addEventListener('click', () => {
+    const btn = document.querySelector('[id^="btn-save-"]');
+    btn.id = btn.id === 'btn-save-a81f' ? 'btn-save-7c2d' : 'btn-save-a81f';
+  });
+</script>
+</main>
+<footer class="site-footer"><a href="https://sociabuzz.com/farizagati">Fariz Agati</a> &bull; <a href="index.html">All pages</a></footer>
+</body>
+</html>

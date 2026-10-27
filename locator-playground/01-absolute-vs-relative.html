@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absolute vs Relative XPath</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header"><a href="index.html" class="site-name">Locator Playground</a></header>
+<main class="wrap">
+<h1>Absolute vs Relative XPath</h1>
+<div class="layout">
+  <div class="panel" id="panel">
+    <div class="panel-body">
+      <div class="field">
+        <input id="search-box" type="text" placeholder="Search">
+      </div>
+    </div>
+  </div>
+</div>
+<button id="toggle-banner" type="button">Show banner</button>
+
+<script>
+  document.getElementById('toggle-banner').addEventListener('click', () => {
+    const banner = document.getElementById('banner');
+    if (banner) { banner.remove(); return; }
+    const panel = document.getElementById('panel');
+    const div = document.createElement('div');
+    div.id = 'banner';
+    div.textContent = 'Free shipping this week';
+    panel.parentNode.insertBefore(div, panel);
+  });
+</script>
+</main>
+<footer class="site-footer"><a href="https://sociabuzz.com/farizagati">Fariz Agati</a> &bull; <a href="index.html">All pages</a></footer>
+</body>
+</html>

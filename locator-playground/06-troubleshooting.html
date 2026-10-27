@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best Practices and Troubleshooting</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header"><a href="index.html" class="site-name">Locator Playground</a></header>
+<main class="wrap">
+<h1>Best Practices and Troubleshooting</h1>
+<h2>Order summary</h2>
+<div id="summary">
+  <button type="button">
+    Sign in
+  </button>
+  <p><span>Grand&nbsp;Total</span></p>
+  <p>Subtotal: <b>Rp 50.000</b></p>
+  <a href="#login" class="upper">Login</a>
+  <button type="button">Checkout</button>
+</div>
+
+<div class="mobile-bar">
+  <button type="button">Checkout</button>
+</div>
+
+<h2>Promo</h2>
+<iframe name="promo" title="Promo" srcdoc="<input id='promo-code' type='text'>"></iframe>
+
+<h2>Chat</h2>
+<div id="help-chat"></div>
+
+<h2>Payments</h2>
+<div class="payments">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
+</div>
+
+<h2>Sign up</h2>
+<div class="css-1x2y3z" id="signup-wrap">
+  <div>
+    <div>
+      <button type="submit" class="css-901oao" id="signup-btn">Create account</button>
+    </div>
+  </div>
+</div>
+<button id="switch-theme" type="button">Switch theme</button>
+
+<script>
+  document.getElementById('help-chat').attachShadow({ mode: 'open' })
+    .innerHTML = '<p id="chat-greeting">Hi there</p>';
+  document.getElementById('switch-theme').addEventListener('click', () => {
+    const wrap = document.getElementById('signup-wrap');
+    const btn = document.getElementById('signup-btn');
+    const classic = btn.className === 'css-901oao';
+    wrap.className = classic ? 'css-8k2m1p' : 'css-1x2y3z';
+    btn.className = classic ? 'css-1qa7zp' : 'css-901oao';
+  });
+</script>
+</main>
+<footer class="site-footer"><a href="https://sociabuzz.com/farizagati">Fariz Agati</a> &bull; <a href="index.html">All pages</a></footer>
+</body>
+</html>

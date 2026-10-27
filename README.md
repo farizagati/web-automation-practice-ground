@@ -42,6 +42,7 @@ The project includes a wide variety of practice pages:
 *   **[Infinite Scroll](pages/infinite-scroll.html)**: Scroll-based data loading.
 *   **[Slow Resources](pages/slow-resources.html)**: Simulating network latency.
 *   **[Advanced XPath: SVG](pages/svg-xpath.html)**: Working with SVG elements and graphs.
+*   **[Locator Playground](locator-playground/index.html)**: Six plain pages of fixed dummy content for writing XPath. Run locally and open `/locator-playground/`.
 
 ### 🔐 Authentication & Security
 *   **[Basic Auth](pages/basic-auth.html)**: Native browser basic authentication.
@@ -53,6 +54,10 @@ The project includes a wide variety of practice pages:
 
 ## 🛠️ Getting Started
 
+### Live Demo
+Try it now: <https://farizagati.github.io/web-automation-practice-ground/>
+
+### Run Locally
 Since this project uses vanilla web technologies, you can run it easily without a heavy backend.
 
 ### Option 1: Open Directly

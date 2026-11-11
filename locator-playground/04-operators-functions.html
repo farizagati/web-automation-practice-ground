@@ -11,43 +11,106 @@
 <main class="wrap">
 <h1>Operators and Functions</h1>
 <h2>Products</h2>
+<form id="filters">
+  <div class="filter">
+    <label for="filter-name">Name</label>
+    <input id="filter-name" name="name" type="text" placeholder="Search products">
+  </div>
+  <div class="filter">
+    <label for="filter-category">Category</label>
+    <select id="filter-category" name="category">
+      <option value="">All categories</option>
+      <option value="laptop">Laptop</option>
+      <option value="desktop">Desktop</option>
+      <option value="phone">Phone</option>
+      <option value="accessory">Accessory</option>
+    </select>
+  </div>
+  <div class="filter">
+    <label for="filter-max-price">Max price</label>
+    <input id="filter-max-price" name="maxPrice" type="number" min="0" step="50000" placeholder="No limit">
+  </div>
+  <div class="filter">
+    <label for="sort-by">Sort by</label>
+    <select id="sort-by" name="sort">
+      <option value="">Default</option>
+      <option value="price-asc">Price: low to high</option>
+      <option value="price-desc">Price: high to low</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+  <label><input id="filter-in-stock" name="inStock" type="checkbox"> In stock only</label>
+  <label><input id="filter-featured" name="featured" type="checkbox"> Featured only</label>
+  <button type="reset">Reset</button>
+</form>
+<p id="result-count">Showing 9 of 9 products</p>
 <div class="product-list">
   <div id="prod-101" class="product featured" data-category="laptop" data-price="12500000" data-stock="8" data-incoming="2" data-discount="500000">
     <h3>Laptop Aero 14</h3>
     <p>Rp 12.500.000</p>
+    <p class="discount">Save Rp 500.000</p>
+    <p class="stock">8 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
   <div id="prod-102" class="product" data-category="laptop" data-price="9800000" data-stock="0" data-incoming="10">
     <h3>Laptop Slim 13</h3>
     <p>Rp 9.800.000</p>
+    <p class="stock">Restocking soon</p>
+    <button type="button" disabled>Add to cart</button>
   </div>
   <div id="prod-103" class="product featured" data-category="desktop" data-price="15000000" data-stock="3" data-incoming="0" data-discount="1000000">
     <h3>Desktop Tower X</h3>
     <p>Rp 15.000.000</p>
+    <p class="discount">Save Rp 1.000.000</p>
+    <p class="stock">3 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
   <div id="prod-104" class="product" data-category="phone" data-price="3200000" data-stock="15" data-incoming="5" data-discount="200000">
     <h3>Phone Nova 5</h3>
     <p>Rp 3.200.000</p>
+    <p class="discount">Save Rp 200.000</p>
+    <p class="stock">15 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
   <div id="prod-105" class="product inactive" data-category="phone" data-price="2100000" data-stock="0" data-incoming="0">
     <h3>Phone Mini 2</h3>
     <p>Rp 2.100.000</p>
+    <p class="stock">Out of stock</p>
+    <button type="button" disabled>Add to cart</button>
   </div>
   <div id="prod-106" class="product" data-category="accessory" data-price="250000" data-stock="40" data-incoming="0">
     <h3>Mouse Wireless M1</h3>
     <p>Rp 250.000</p>
+    <p class="stock">40 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
   <div id="prod-107" class="product featured" data-category="accessory" data-price="650000" data-stock="22" data-incoming="10" data-discount="50000">
     <h3>Keyboard K2</h3>
     <p>Rp 650.000</p>
+    <p class="discount">Save Rp 50.000</p>
+    <p class="stock">22 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
   <div id="prod-108" class="product inactive" data-category="accessory" data-price="450000" data-stock="0" data-incoming="30">
     <h3>USB-C Hub 7in1</h3>
     <p>Rp 450.000</p>
+    <p class="stock">Restocking soon</p>
+    <button type="button" disabled>Add to cart</button>
   </div>
   <div id="prod-109" class="product" data-category="accessory" data-price="1850000" data-stock="5" data-incoming="5">
     <h3>Monitor 24 inch</h3>
     <p>Rp 1.850.000</p>
+    <p class="stock">5 in stock</p>
+    <button type="button">Add to cart</button>
   </div>
+</div>
+
+<h2>Cart</h2>
+<div id="cart">
+  <p>Items: <b id="cart-count">0</b></p>
+  <p>Total: <b id="cart-total">Rp 0</b></p>
+  <ul id="cart-items"></ul>
+  <button id="clear-cart" type="button" disabled>Clear cart</button>
 </div>
 
 <h2>Popular</h2>
@@ -66,6 +129,104 @@
   <li>Nova</li>
   <li>K-Series</li>
 </ul>
+
+<script>
+  const list = document.querySelector('.product-list');
+  const products = [...list.children];
+  const filters = document.getElementById('filters');
+  const cart = new Map();
+
+  const rupiah = (value) => 'Rp ' + value.toString().replace(/\B(?=(\d{3})+$)/g, '.');
+
+  function stockLabel(product) {
+    const stock = Number(product.dataset.stock);
+    if (stock) return stock + ' in stock';
+    return Number(product.dataset.incoming) ? 'Restocking soon' : 'Out of stock';
+  }
+
+  function renderStock(product) {
+    product.querySelector('.stock').textContent = stockLabel(product);
+    product.querySelector('button').disabled = product.dataset.stock === '0';
+  }
+
+  function applyFilters() {
+    const name = filters.elements.name.value.trim().toLowerCase();
+    const category = filters.elements.category.value;
+    const maxPrice = filters.elements.maxPrice.value;
+    const sort = filters.elements.sort.value;
+
+    const sorted = [...products];
+    if (sort === 'name') sorted.sort((a, b) => a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent));
+    if (sort === 'price-asc') sorted.sort((a, b) => a.dataset.price - b.dataset.price);
+    if (sort === 'price-desc') sorted.sort((a, b) => b.dataset.price - a.dataset.price);
+    list.append(...sorted);
+
+    let shown = 0;
+    products.forEach((product) => {
+      const visible =
+        product.querySelector('h3').textContent.toLowerCase().includes(name) &&
+        (!category || product.dataset.category === category) &&
+        (maxPrice === '' || Number(product.dataset.price) <= Number(maxPrice)) &&
+        (!filters.elements.inStock.checked || Number(product.dataset.stock) > 0) &&
+        (!filters.elements.featured.checked || product.classList.contains('featured'));
+      product.hidden = !visible;
+      if (visible) shown++;
+    });
+
+    document.getElementById('result-count').textContent = 'Showing ' + shown + ' of ' + products.length + ' products';
+    document.getElementById('no-products')?.remove();
+    if (!shown) {
+      const empty = document.createElement('div');
+      empty.id = 'no-products';
+      empty.className = 'alert alert-info';
+      empty.setAttribute('role', 'status');
+      empty.textContent = 'No products match the current filters.';
+      list.after(empty);
+    }
+  }
+
+  function renderCart() {
+    let count = 0;
+    let total = 0;
+    const items = [];
+    cart.forEach((quantity, product) => {
+      count += quantity;
+      total += quantity * (product.dataset.price - (product.dataset.discount || 0));
+      const li = document.createElement('li');
+      li.textContent = product.querySelector('h3').textContent + ' x ' + quantity;
+      items.push(li);
+    });
+    document.getElementById('cart-items').replaceChildren(...items);
+    document.getElementById('cart-count').textContent = count;
+    document.getElementById('cart-total').textContent = rupiah(total);
+    document.getElementById('clear-cart').disabled = !count;
+  }
+
+  list.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') return;
+    const product = e.target.closest('.product');
+    product.dataset.stock = Number(product.dataset.stock) - 1;
+    cart.set(product, (cart.get(product) || 0) + 1);
+    renderStock(product);
+    renderCart();
+    applyFilters();
+  });
+
+  document.getElementById('clear-cart').addEventListener('click', () => {
+    cart.forEach((quantity, product) => {
+      product.dataset.stock = Number(product.dataset.stock) + quantity;
+      renderStock(product);
+    });
+    cart.clear();
+    renderCart();
+    applyFilters();
+  });
+
+  filters.addEventListener('input', applyFilters);
+  filters.addEventListener('submit', (e) => e.preventDefault());
+  // reset fires before the fields are cleared
+  filters.addEventListener('reset', () => setTimeout(applyFilters));
+</script>
 </main>
 <footer class="site-footer"><a href="https://sociabuzz.com/farizagati">Fariz Agati</a> &bull; <a href="index.html">All pages</a></footer>
 </body>

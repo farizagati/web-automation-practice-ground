@@ -356,6 +356,18 @@ tr.empty td { text-align: center; color: var(--color-text-muted); }
 
 /* ==== 04 Operators and Functions ==== */
 
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.filter { display: flex; flex-direction: column; gap: var(--space-xs); flex: 1 1 180px; }
+.filter input, .filter select { max-width: none; }
+#filters > label { padding-bottom: var(--space-sm); }
+#result-count { font-size: 0.875rem; color: var(--color-text-muted); }
+
 .product-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -365,6 +377,13 @@ tr.empty td { text-align: center; color: var(--color-text-muted); }
 .product p { margin: 0; font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); }
 .product.featured { border-top-color: var(--color-primary); }
 .product.inactive { opacity: 0.45; }
+.product .discount { font-family: var(--font-sans); font-size: 0.8rem; color: var(--color-success); }
+.product .stock { margin: var(--space-sm) 0; font-family: var(--font-sans); font-size: 0.8rem; color: var(--color-text-muted); }
+
+#cart { max-width: 400px; }
+#cart b { color: var(--color-accent); }
+#cart-items { margin: var(--space-sm) 0; padding-left: var(--space-lg); color: var(--color-text-muted); }
+#cart-items:empty { display: none; }
 
 .tags, .tabs { display: flex; flex-wrap: wrap; gap: var(--space-sm); padding: 0; list-style: none; }
 .tags li {

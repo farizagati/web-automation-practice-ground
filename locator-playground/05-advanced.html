@@ -16,6 +16,19 @@
   <li class="tab-security">Security</li>
   <li class="tab-billing">Billing</li>
 </ul>
+<div class="tab-panels">
+  <div class="panel-profile">
+    <p>Update your name and photo in the profile section.</p>
+  </div>
+  <div class="panel-security" hidden>
+    <p>Two-factor authentication is <b id="two-factor-state">off</b>.</p>
+    <button id="toggle-two-factor" type="button">Turn on</button>
+  </div>
+  <div class="panel-billing" hidden>
+    <p>Current plan: <b>Free</b></p>
+    <p>Next invoice: none</p>
+  </div>
+</div>
 
 <h2>Menus</h2>
 <div class="menu">
@@ -45,7 +58,10 @@
 
 <h2>Profile</h2>
 <div class="profile">
+  <div class="avatar" data-photo="1">B</div>
   <div class="first-name" id="name-holder">Budi</div>
+  <label for="first-name-input">First name</label>
+  <input id="first-name-input" type="text" value="Budi">
   <button type="submit" name="edit">Save profile</button>
   <button type="button" name="edit">Edit photo</button>
   <button id="btn-save-a81f" type="button">Save changes</button>
@@ -55,6 +71,64 @@
 <button id="change-id" type="button">Change ID</button>
 
 <script>
+  function showStatus(id, kind, message, anchor) {
+    document.getElementById(id)?.remove();
+    const status = document.createElement('div');
+    status.id = id;
+    status.className = 'alert alert-' + kind;
+    status.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+    status.textContent = message;
+    anchor.after(status);
+  }
+
+  const tabs = document.querySelector('.tabs');
+  tabs.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'LI') return;
+    [...tabs.children].forEach((tab) => {
+      const name = tab.classList[0].replace('tab-', '');
+      tab.classList.toggle('active', tab === e.target);
+      document.querySelector('.panel-' + name).hidden = tab !== e.target;
+    });
+  });
+
+  document.getElementById('toggle-two-factor').addEventListener('click', (e) => {
+    const state = document.getElementById('two-factor-state');
+    const on = state.textContent === 'off';
+    state.textContent = on ? 'on' : 'off';
+    e.target.textContent = on ? 'Turn off' : 'Turn on';
+  });
+
+  const menus = [...document.querySelectorAll('.menu')];
+  menus.forEach((menu) => menu.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'LI') return;
+    document.querySelector('.menu [aria-current]')?.removeAttribute('aria-current');
+    e.target.setAttribute('aria-current', 'true');
+    showStatus('menu-selection', 'info', 'Selected: ' + e.target.textContent, menus[menus.length - 1]);
+  }));
+
+  const profile = document.querySelector('.profile');
+  const nameInput = document.getElementById('first-name-input');
+  profile.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') return;
+    const avatar = profile.querySelector('.avatar');
+    if (e.target.textContent === 'Save profile') {
+      const name = nameInput.value.trim();
+      if (!name) {
+        nameInput.setAttribute('aria-invalid', 'true');
+        return showStatus('profile-status', 'error', 'First name is required.', profile);
+      }
+      nameInput.removeAttribute('aria-invalid');
+      document.getElementById('name-holder').textContent = name;
+      avatar.textContent = name[0].toUpperCase();
+      return showStatus('profile-status', 'success', 'Profile saved.', profile);
+    }
+    if (e.target.textContent === 'Edit photo') {
+      avatar.dataset.photo = avatar.dataset.photo % 3 + 1;
+      return showStatus('profile-status', 'success', 'Photo updated.', profile);
+    }
+    showStatus('profile-status', 'success', 'All changes saved.', profile);
+  });
+
   document.getElementById('switch-layout').addEventListener('click', () => {
     const old = document.getElementById('name-holder');
     const el = document.createElement(old.tagName === 'DIV' ? 'span' : 'div');
@@ -65,7 +139,11 @@
   });
   document.getElementById('change-id').addEventListener('click', () => {
     const btn = document.querySelector('[id^="btn-save-"]');
-    btn.id = btn.id === 'btn-save-a81f' ? 'btn-save-7c2d' : 'btn-save-a81f';
+    let id;
+    do {
+      id = 'btn-save-' + Math.floor(Math.random() * 0x10000).toString(16).padStart(4, '0');
+    } while (id === btn.id);
+    btn.id = id;
   });
 </script>
 </main>

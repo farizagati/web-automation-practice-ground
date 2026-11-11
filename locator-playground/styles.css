@@ -330,6 +330,10 @@ th {
 tbody tr { background: var(--color-bg-card); }
 tbody tr:hover { background: var(--color-bg-raised); }
 td a { margin-right: var(--space-sm); }
+tr.empty td { text-align: center; color: var(--color-text-muted); }
+
+#edit-form { margin-top: var(--space-md); }
+.actions { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
 
 #categories, #categories ul { list-style: none; }
 #categories { padding: 0; }
@@ -340,11 +344,15 @@ td a { margin-right: var(--space-sm); }
 }
 #categories li { padding: var(--space-xs) 0; }
 #categories span {
+  cursor: pointer;
   padding: 2px var(--space-sm);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
 }
+#categories span:hover { border-color: var(--color-border-strong); }
+#categories span[aria-current] { border-color: var(--color-primary); color: var(--color-primary-hover); }
+#category-path { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); }
 
 /* ==== 04 Operators and Functions ==== */
 

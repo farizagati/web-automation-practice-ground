@@ -13,6 +13,10 @@
   --color-accent: #22d3ee;
   --color-border: #27272a;
   --color-border-strong: #3f3f46;
+  --color-success: #22c55e;
+  --color-success-soft: rgba(34, 197, 94, 0.12);
+  --color-error: #ef4444;
+  --color-error-soft: rgba(239, 68, 68, 0.12);
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
@@ -38,6 +42,8 @@
 /* ==== Base ==== */
 
 * { box-sizing: border-box; }
+/* Keep the hidden attribute working on elements that set their own display */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;
@@ -78,6 +84,7 @@ h2 {
 h1 + h2 { margin-top: 0; padding-top: 0; border-top: 0; }
 h3 { margin: 0 0 var(--space-xs); font-size: 1rem; font-weight: 600; }
 p { margin: 0 0 var(--space-sm); }
+code { font-family: var(--font-mono); font-size: 0.9em; color: var(--color-accent); }
 
 /* ==== Layout ==== */
 
@@ -142,6 +149,13 @@ h1 + ul a::before {
   font-size: 0.8rem;
   color: var(--color-accent);
 }
+h1 + ul a span {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
 h1 + ul a:hover {
   border-color: var(--color-primary);
   transform: translateY(-2px);
@@ -151,7 +165,10 @@ h1 + ul a:hover {
 /* ==== Controls ==== */
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select {
   width: 100%;
   max-width: 320px;
   padding: var(--space-sm) var(--space-md);
@@ -162,7 +179,7 @@ input[type="password"] {
   border-radius: var(--radius-sm);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-input:focus {
+input:focus, select:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-soft);
@@ -182,20 +199,44 @@ button {
 }
 button:hover { background: var(--color-primary-hover); }
 button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+button:disabled { background: var(--color-bg-raised); color: var(--color-text-muted); cursor: not-allowed; }
+input[aria-invalid="true"] { border-color: var(--color-error); }
 
 /* State-toggle buttons: outlined so they read apart from the page content */
-#toggle-banner, #switch-layout, #change-id, #switch-theme {
+#toggle-banner, #switch-layout, #change-id, #switch-theme, #reset-tables {
   margin: var(--space-lg) var(--space-sm) 0 0;
   background: transparent;
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
-#toggle-banner:hover, #switch-layout:hover, #change-id:hover, #switch-theme:hover {
+#toggle-banner:hover, #switch-layout:hover, #change-id:hover, #switch-theme:hover, #reset-tables:hover {
   background: rgba(34, 211, 238, 0.1);
 }
 
+/* Secondary actions inside a card */
+button[type="reset"], #logout, #clear-cart, .cancel {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+button[type="reset"]:hover, #logout:hover, #clear-cart:hover, .cancel:hover { background: var(--color-bg-raised); }
+
+/* ==== Alerts ==== */
+
+.alert {
+  margin: var(--space-md) 0;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border-strong);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+.alert-success { background: var(--color-success-soft); border-color: var(--color-success); color: var(--color-success); }
+.alert-error { background: var(--color-error-soft); border-color: var(--color-error); color: var(--color-error); }
+.alert-info { background: rgba(34, 211, 238, 0.08); border-color: var(--color-accent); color: var(--color-accent); }
+
 /* Shared card look */
-.layout, .container, form, .menu, .profile, #summary, #help-chat, #signup-wrap, .product {
+.layout, .container, form, .menu, .profile, .tab-panels, #summary, #help-chat, #signup-wrap, #credentials, #account, #cart, .product {
   padding: var(--space-lg);
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -209,6 +250,19 @@ button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2
   border: 1px dashed var(--color-border-strong);
   border-radius: var(--radius-sm);
 }
+.field { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.results { margin-top: var(--space-md); }
+#result-count { font-size: 0.875rem; color: var(--color-text-muted); }
+#results { margin: 0; padding: 0; list-style: none; }
+#results li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+#results li:last-child { border-bottom: 0; }
+.price { font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-accent); }
 #banner {
   margin-bottom: var(--space-md);
   padding: var(--space-sm) var(--space-md);

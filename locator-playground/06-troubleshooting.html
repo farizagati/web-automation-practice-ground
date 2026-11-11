@@ -15,8 +15,8 @@
   <button type="button">
     Sign in
   </button>
-  <p><span>Grand&nbsp;Total</span></p>
   <p>Subtotal: <b>Rp 50.000</b></p>
+  <p><span>Grand&nbsp;Total</span>: <b id="grand-total">Rp 50.000</b></p>
   <a href="#login" class="upper">Login</a>
   <button type="button">Checkout</button>
 </div>
@@ -26,22 +26,25 @@
 </div>
 
 <h2>Promo</h2>
-<iframe name="promo" title="Promo" srcdoc="<input id='promo-code' type='text'>"></iframe>
+<p>Use code <code>HEMAT10</code> for 10% off.</p>
+<iframe name="promo" title="Promo" srcdoc="<link rel='stylesheet' href='styles.css'><body class='promo-frame'><input id='promo-code' type='text' placeholder='Promo code'> <button id='apply-promo' type='button'>Apply</button>"></iframe>
 
 <h2>Chat</h2>
 <div id="help-chat"></div>
 
 <h2>Payments</h2>
 <div class="payments">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><title>Card</title><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><title>Bank transfer</title><polygon points="12,2 22,9 2,9"/><rect x="4" y="11" width="16" height="9"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><title>E-wallet</title><circle cx="12" cy="12" r="10"/></svg>
 </div>
+<p>Payment method: <b id="payment-method">Not selected</b></p>
 
 <h2>Sign up</h2>
 <div class="css-1x2y3z" id="signup-wrap">
   <div>
     <div>
+      <input type="email" class="css-4rt9ws" id="signup-email" placeholder="Email">
       <button type="submit" class="css-901oao" id="signup-btn">Create account</button>
     </div>
   </div>
@@ -49,14 +52,138 @@
 <button id="switch-theme" type="button">Switch theme</button>
 
 <script>
-  document.getElementById('help-chat').attachShadow({ mode: 'open' })
-    .innerHTML = '<p id="chat-greeting">Hi there</p>';
+  const SUBTOTAL = 50000;
+  const PROMO_CODE = 'HEMAT10';
+  const rupiah = (value) => 'Rp ' + value.toString().replace(/\B(?=(\d{3})+$)/g, '.');
+
+  function showStatus(id, kind, message, anchor) {
+    const doc = anchor.ownerDocument;
+    doc.getElementById(id)?.remove();
+    const status = doc.createElement('div');
+    status.id = id;
+    status.className = 'alert alert-' + kind;
+    status.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+    status.textContent = message;
+    anchor.after(status);
+  }
+
+  // Order summary
+  const summary = document.getElementById('summary');
+  const signInButton = summary.querySelector('button');
+  const loginLink = summary.querySelector('a');
+  const mobileBar = document.querySelector('.mobile-bar');
+  let signedIn = false;
+  let paymentMethod = null;
+
+  function setSignedIn(value) {
+    signedIn = value;
+    signInButton.textContent = value ? '\n    Sign out\n  ' : '\n    Sign in\n  ';
+    loginLink.hidden = value;
+    showStatus('summary-status', 'info', value ? 'Signed in as guest.' : 'Signed out.', mobileBar);
+  }
+
+  function checkout() {
+    if (!signedIn) return showStatus('summary-status', 'error', 'Please sign in before checkout.', mobileBar);
+    if (!paymentMethod) return showStatus('summary-status', 'error', 'Please choose a payment method.', mobileBar);
+    showStatus('summary-status', 'success', 'Order placed. Thank you!', mobileBar);
+  }
+
+  signInButton.addEventListener('click', () => setSignedIn(!signedIn));
+  loginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    setSignedIn(true);
+  });
+  summary.lastElementChild.addEventListener('click', checkout);
+  mobileBar.querySelector('button').addEventListener('click', checkout);
+
+  // Promo (inside the iframe)
+  const promoFrame = document.querySelector('iframe[name="promo"]');
+  function initPromo() {
+    const doc = promoFrame.contentDocument;
+    const input = doc.getElementById('promo-code');
+    const apply = doc.getElementById('apply-promo');
+    if (!input || apply.dataset.ready) return;
+    apply.dataset.ready = 'true';
+    apply.addEventListener('click', () => {
+      const code = input.value.trim().toUpperCase();
+      if (!code) return showStatus('promo-message', 'error', 'Enter a promo code.', apply);
+      if (code !== PROMO_CODE) return showStatus('promo-message', 'error', 'Invalid promo code.', apply);
+      showStatus('promo-message', 'success', 'Promo applied: 10% off', apply);
+      const discount = SUBTOTAL / 10;
+      const total = document.getElementById('grand-total');
+      if (!document.getElementById('discount')) {
+        const line = document.createElement('p');
+        line.id = 'discount';
+        line.innerHTML = 'Discount: <b></b>';
+        line.lastChild.textContent = '- ' + rupiah(discount);
+        total.parentElement.before(line);
+      }
+      total.textContent = rupiah(SUBTOTAL - discount);
+    });
+  }
+  promoFrame.addEventListener('load', initPromo);
+  initPromo();
+
+  // Chat (inside the shadow root)
+  const chat = document.getElementById('help-chat').attachShadow({ mode: 'open' });
+  chat.innerHTML = `
+    <style>
+      p, ul { margin: 0 0 var(--space-sm); }
+      ul { padding: 0; list-style: none; }
+      li { margin-bottom: var(--space-xs); color: var(--color-text-muted); }
+      li.me { color: var(--color-text); }
+      div { display: flex; gap: var(--space-sm); }
+      input { flex: 1; min-width: 0; padding: var(--space-sm) var(--space-md); background: var(--color-bg); color: inherit; font: inherit; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); }
+      button { padding: var(--space-sm) var(--space-md); background: var(--color-primary); color: #fff; font: inherit; border: 0; border-radius: var(--radius-sm); cursor: pointer; }
+    </style>
+    <p id="chat-greeting">Hi there</p>
+    <ul id="chat-log"></ul>
+    <div>
+      <input id="chat-input" type="text" placeholder="Type a message">
+      <button id="chat-send" type="button">Send</button>
+    </div>`;
+  const chatInput = chat.getElementById('chat-input');
+  function sendChat() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    [['me', 'You: ' + text], ['bot', 'Support: Thanks, we will reply soon.']].forEach(([who, line]) => {
+      const li = document.createElement('li');
+      li.className = who;
+      li.textContent = line;
+      chat.getElementById('chat-log').append(li);
+    });
+    chatInput.value = '';
+  }
+  chat.getElementById('chat-send').addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChat(); });
+
+  // Payments
+  const payments = document.querySelector('.payments');
+  payments.addEventListener('click', (e) => {
+    const icon = e.target.closest('svg');
+    if (!icon) return;
+    [...payments.children].forEach((svg) => svg.classList.toggle('selected', svg === icon));
+    paymentMethod = icon.querySelector('title').textContent;
+    document.getElementById('payment-method').textContent = paymentMethod;
+  });
+
+  // Sign up
+  const signupWrap = document.getElementById('signup-wrap');
+  const signupEmail = document.getElementById('signup-email');
+  const signupButton = document.getElementById('signup-btn');
+  signupButton.addEventListener('click', () => {
+    const email = signupEmail.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      signupEmail.setAttribute('aria-invalid', 'true');
+      return showStatus('signup-status', 'error', 'Enter a valid email address.', signupWrap);
+    }
+    signupEmail.removeAttribute('aria-invalid');
+    showStatus('signup-status', 'success', 'Account created for ' + email, signupWrap);
+  });
+
+  const randomClass = () => 'css-' + Math.random().toString(36).slice(2, 8).padEnd(6, '0');
   document.getElementById('switch-theme').addEventListener('click', () => {
-    const wrap = document.getElementById('signup-wrap');
-    const btn = document.getElementById('signup-btn');
-    const classic = btn.className === 'css-901oao';
-    wrap.className = classic ? 'css-8k2m1p' : 'css-1x2y3z';
-    btn.className = classic ? 'css-1qa7zp' : 'css-901oao';
+    [signupWrap, signupEmail, signupButton].forEach((el) => { el.className = randomClass(); });
   });
 </script>
 </main>

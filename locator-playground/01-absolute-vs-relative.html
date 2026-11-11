@@ -15,21 +15,82 @@
     <div class="panel-body">
       <div class="field">
         <input id="search-box" type="text" placeholder="Search">
+        <button id="search-button" type="button">Search</button>
+        <button id="clear-search" type="reset">Clear</button>
       </div>
     </div>
+  </div>
+  <div class="results">
+    <p id="result-count">6 products</p>
+    <ul id="results">
+      <li><span class="name">Laptop Aero 14</span> <span class="price">Rp 12.500.000</span></li>
+      <li><span class="name">Laptop Slim 13</span> <span class="price">Rp 9.800.000</span></li>
+      <li><span class="name">Desktop Tower X</span> <span class="price">Rp 15.000.000</span></li>
+      <li><span class="name">Phone Nova 5</span> <span class="price">Rp 3.200.000</span></li>
+      <li><span class="name">Mouse Wireless M1</span> <span class="price">Rp 250.000</span></li>
+      <li><span class="name">Keyboard K2</span> <span class="price">Rp 650.000</span></li>
+    </ul>
   </div>
 </div>
 <button id="toggle-banner" type="button">Show banner</button>
 
 <script>
-  document.getElementById('toggle-banner').addEventListener('click', () => {
+  const PRODUCTS = [
+    ['Laptop Aero 14', 'Rp 12.500.000'],
+    ['Laptop Slim 13', 'Rp 9.800.000'],
+    ['Desktop Tower X', 'Rp 15.000.000'],
+    ['Phone Nova 5', 'Rp 3.200.000'],
+    ['Mouse Wireless M1', 'Rp 250.000'],
+    ['Keyboard K2', 'Rp 650.000']
+  ];
+  const searchBox = document.getElementById('search-box');
+  const results = document.getElementById('results');
+  const resultCount = document.getElementById('result-count');
+
+  function search() {
+    const term = searchBox.value.trim();
+    const found = PRODUCTS.filter(([name]) => name.toLowerCase().includes(term.toLowerCase()));
+    results.replaceChildren(...found.map(([name, price]) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="name"></span> <span class="price"></span>';
+      li.children[0].textContent = name;
+      li.children[1].textContent = price;
+      return li;
+    }));
+    document.getElementById('no-results')?.remove();
+    resultCount.textContent = found.length + (found.length === 1 ? ' product' : ' products');
+    if (!found.length) {
+      const empty = document.createElement('div');
+      empty.id = 'no-results';
+      empty.className = 'alert alert-info';
+      empty.setAttribute('role', 'status');
+      empty.textContent = 'No products found for "' + term + '"';
+      results.after(empty);
+    }
+  }
+
+  document.getElementById('search-button').addEventListener('click', search);
+  searchBox.addEventListener('keydown', (e) => { if (e.key === 'Enter') search(); });
+  document.getElementById('clear-search').addEventListener('click', () => {
+    searchBox.value = '';
+    search();
+    searchBox.focus();
+  });
+
+  const toggle = document.getElementById('toggle-banner');
+  toggle.addEventListener('click', () => {
     const banner = document.getElementById('banner');
-    if (banner) { banner.remove(); return; }
+    if (banner) {
+      banner.remove();
+      toggle.textContent = 'Show banner';
+      return;
+    }
     const panel = document.getElementById('panel');
     const div = document.createElement('div');
     div.id = 'banner';
     div.textContent = 'Free shipping this week';
     panel.parentNode.insertBefore(div, panel);
+    toggle.textContent = 'Hide banner';
   });
 </script>
 </main>

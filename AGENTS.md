@@ -57,7 +57,13 @@ Every scenario page follows the same skeleton (copy `pages/checkboxes.html` as a
 
 ## Locator Playground
 
-`locator-playground/` is a separate mini-site (own `index.html` and `styles.css`) built from `docs/XPath Practice Ground MVP Spec.md`. It is exempt from the page skeleton, footer text, Testing Tips and `id` conventions above. Its markup is frozen: copy it from the spec exactly, add no elements or attributes (no `data-testid`), and no teaching text, answers or XPath examples.
+`locator-playground/` is a separate mini-site (own `index.html` and `styles.css`) of small working apps (search, login, tables, catalog, profile, checkout) used as XPath practice targets. It is exempt from the page skeleton, footer text, Testing Tips and `id` conventions above.
+
+- Each page is self-contained: inline `<script>`, shared `styles.css`, no shared JS file.
+- No teaching text, answers or XPath examples on the pages, and no `data-testid` attributes.
+- Feedback messages (`.alert`, `.alert-success`, `.alert-error`, `.alert-info`) are inserted into the DOM when they apply and removed otherwise, so their presence can be asserted. On-demand views use `<template>`.
+- Keep the existing element structure, class names, ids and texts stable: presentation material depends on them. Add around them rather than renaming or reordering.
+- Demo login on `02-syntax-basics.html`: `JohnyYesPapa` / `EatingSugarNoPapa!` (shown on the page). Promo code on `06-troubleshooting.html`: `HEMAT10`.
 
 ## Style
 

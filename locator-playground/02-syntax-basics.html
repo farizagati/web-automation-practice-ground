@@ -17,14 +17,113 @@
   </section>
 </div>
 
-<form id="login-form">
+<div id="credentials">
+  <p>Demo account</p>
+  <dl>
+    <dt>Username</dt>
+    <dd>JohnyYesPapa</dd>
+    <dt>Password</dt>
+    <dd>EatingSugarNoPapa!</dd>
+  </dl>
+</div>
+
+<form id="login-form" novalidate>
   <label for="user-name">Username</label>
-  <input id="user-name" type="text" required>
+  <input id="user-name" name="username" type="text" placeholder="Enter username" autocomplete="username" required>
   <label for="password">Password</label>
-  <input id="password" type="password" required>
-  <label><input id="remember-me" type="checkbox"> Remember me</label>
+  <input id="password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
+  <label><input id="remember-me" name="remember" type="checkbox"> Remember me</label>
   <button type="submit">Login</button>
 </form>
+
+<template id="account-template">
+  <div id="account">
+    <div class="alert alert-success" role="status">Congrats! You're logged in!</div>
+    <p>Signed in as <b class="account-name"></b></p>
+    <table id="orders">
+      <thead>
+        <tr><th>Order</th><th>Item</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>#1001</td><td>Laptop Aero 14</td><td>Delivered</td></tr>
+        <tr><td>#1002</td><td>Keyboard K2</td><td>Shipped</td></tr>
+        <tr><td>#1003</td><td>Phone Nova 5</td><td>Processing</td></tr>
+      </tbody>
+    </table>
+    <button id="logout" type="button">Logout</button>
+  </div>
+</template>
+
+<script>
+  const USERNAME = 'JohnyYesPapa';
+  const PASSWORD = 'EatingSugarNoPapa!';
+  const REMEMBER_KEY = 'locator-playground-username';
+
+  const form = document.getElementById('login-form');
+  const userName = document.getElementById('user-name');
+  const password = document.getElementById('password');
+  const rememberMe = document.getElementById('remember-me');
+
+  // localStorage can be blocked (private mode, file://), the form must still work
+  const store = {
+    get() { try { return localStorage.getItem(REMEMBER_KEY); } catch (e) { return null; } },
+    set(value) { try { localStorage.setItem(REMEMBER_KEY, value); } catch (e) {} },
+    clear() { try { localStorage.removeItem(REMEMBER_KEY); } catch (e) {} }
+  };
+
+  function showError(message, field) {
+    clearError();
+    const alert = document.createElement('div');
+    alert.id = 'login-error';
+    alert.className = 'alert alert-error';
+    alert.setAttribute('role', 'alert');
+    alert.textContent = message;
+    form.before(alert);
+    field.setAttribute('aria-invalid', 'true');
+    field.focus();
+  }
+
+  function clearError() {
+    document.getElementById('login-error')?.remove();
+    userName.removeAttribute('aria-invalid');
+    password.removeAttribute('aria-invalid');
+  }
+
+  function resetForm() {
+    form.reset();
+    const remembered = store.get();
+    if (remembered) {
+      userName.value = remembered;
+      rememberMe.checked = true;
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = userName.value.trim();
+    if (!name) return showError('Username is required.', userName);
+    if (!password.value) return showError('Password is required.', password);
+    if (name !== USERNAME) return showError('Username is not registered.', userName);
+    if (password.value !== PASSWORD) return showError('Incorrect password.', password);
+
+    clearError();
+    if (rememberMe.checked) store.set(name); else store.clear();
+    const account = document.getElementById('account-template').content.cloneNode(true);
+    account.querySelector('.account-name').textContent = name;
+    form.hidden = true;
+    form.after(account);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.id !== 'logout') return;
+    document.getElementById('account').remove();
+    resetForm();
+    form.hidden = false;
+    userName.focus();
+  });
+
+  resetForm();
+</script>
 </main>
 <footer class="site-footer"><a href="https://sociabuzz.com/farizagati">Fariz Agati</a> &bull; <a href="index.html">All pages</a></footer>
 </body>
